@@ -544,34 +544,34 @@ const GKO={BTC:'bitcoin',ETH:'ethereum',SOL:'solana',HYPE:'hyperliquid',BNB:'bin
 // ═══════════════════════════════
 const DEF={
   macro:[
-    {id:'dxy', name:'💵 DXY Dollar',        val:'98.07',      sig:'bull',st:'✅ Declining — risk asset tailwind',      thresh:null,links:[]},
-    {id:'cpi', name:'🔥 CPI (Mar 2026)',    val:'3.3% YoY',  sig:'bear',st:'🔴 Spiked from 2.4% — energy driven',      thresh:null,links:[]},
-    {id:'fed', name:'🏦 Fed Rate',           val:'3.50–3.75%',sig:'neu', st:'⚠️ On hold. 1 cut expected 2026',           thresh:null,links:[]},
-    {id:'ism', name:'🏭 ISM Mfg PMI',       val:'52.7',      sig:'bull',st:'✅ Expansion — 3rd consecutive month',      thresh:'Sell signal at 60+',links:[]},
-    {id:'m2',  name:'💰 Global M2',         val:'$101T',     sig:'bull',st:'✅ +4.29% (3M) — expanding liquidity',      thresh:null,links:[]},
-    {id:'trfs',name:'📦 China Tariffs',     val:'104%',      sig:'bear',st:'🔴 +50% more threatened',                   thresh:null,links:[]},
-    {id:'sprd',name:'📉 Credit Spreads',    val:'Widening',  sig:'bear',st:'🔴 Recession early warning signal',         thresh:null,links:[]},
-    {id:'alts',name:'🌀 Altseason Index',   val:'34/100',    sig:'neu', st:'⚠️ BTC Season (altseason not started)',      thresh:'Alt top: 40–45% BTC dom',links:[]},
+    {id:'dxy', name:'💵 DXY Dollar',        val:'98.57',      sig:'bull',st:'✅ Declining — risk asset tailwind',      thresh:null,links:[{l:'TradingView',u:'https://www.tradingview.com/symbols/TVC-DXY/'},{l:'Yahoo Finance',u:'https://finance.yahoo.com/quote/DX-Y.NYB/'}]},
+    {id:'cpi', name:'🔥 CPI (Mar 2026)',    val:'3.3% YoY',  sig:'bear',st:'🔴 Spiked from 2.4% — Iran war energy shock. Expected to worsen',thresh:null,links:[{l:'BLS',u:'https://www.bls.gov/cpi/'},{l:'Trading Economics',u:'https://tradingeconomics.com/united-states/inflation-cpi'}]},
+    {id:'fed', name:'🏦 Fed Rate',           val:'3.50–3.75%',sig:'bear',st:'🔴 On hold. Hike possible 2027. No cuts expected',thresh:null,links:[{l:'Fed Reserve',u:'https://www.federalreserve.gov/monetarypolicy/openmarket.htm'},{l:'CME FedWatch',u:'https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html'}]},
+    {id:'ism', name:'🏭 ISM Mfg PMI',       val:'52.7',      sig:'bull',st:'✅ Fastest expansion since Aug 2022 — 3rd month in a row',thresh:'Sell signal at 60+',links:[{l:'ISM Official',u:'https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/march/'},{l:'Trading Economics',u:'https://tradingeconomics.com/united-states/business-confidence'}]},
+    {id:'m2',  name:'💰 Global M2',         val:'$101T',     sig:'bull',st:'✅ +4.29% (3M) — expanding liquidity',      thresh:null,links:[{l:'FRED M2',u:'https://fred.stlouisfed.org/series/M2SL'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/bitcoin-macro/'}]},
+    {id:'trfs',name:'📦 China Tariffs',     val:'104%+',     sig:'bear',st:'🔴 Escalating trade war — macro uncertainty headwind',thresh:null,links:[{l:'USTR',u:'https://ustr.gov/issue-areas/enforcement/section-301-investigations'},{l:'Reuters',u:'https://www.reuters.com/world/china/'}]},
+    {id:'sprd',name:'📉 Credit Spreads',    val:'Widening',  sig:'bear',st:'🔴 Recession early warning. Watch HY spread levels',thresh:null,links:[{l:'FRED HY Spreads',u:'https://fred.stlouisfed.org/series/BAMLH0A0HYM2EY'},{l:'Trading Economics',u:'https://tradingeconomics.com/united-states/credit-spreads'}]},
+    {id:'alts',name:'🌀 Altseason Index',   val:'35/100',    sig:'neu', st:'⚠️ BTC Season — dom 58–60%. Alts not started',thresh:'Altseason: index >75',links:[{l:'BlockchainCenter',u:'https://www.blockchaincenter.net/altcoin-season-index/'},{l:'CoinMarketCap',u:'https://coinmarketcap.com/charts/altcoin-season-index/'}]},
     {id:'hyc', name:'📊 HY Credit / BTC Cycles',val:'—',    sig:'neu', st:'⚠️ Sell signal at 80% level',               thresh:'Sell at 80%',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/bitcoin-macro/'}]},
   ],
   onchain:[
-    {id:'mvrv',name:'📊 MVRV Z-Score',     val:'1.2',         sig:'bull',st:'✅ Deep accumulation zone',                thresh:'Sell: 3.0–3.3',links:[]},
-    {id:'nupl',name:'💎 NUPL',             val:'~37%',         sig:'bull',st:'✅ Hope/Optimism — safe zone',             thresh:'Sell: 63–64%',links:[]},
-    {id:'sopr',name:'📉 STH SOPR',         val:'0.92',         sig:'bull',st:'✅ Capitulation — contrarian buy',         thresh:'Sell at 1.4',links:[{l:'CryptoQuant',u:'https://cryptoquant.com/prochart/77NgyaZgS9pGsa'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/sopr-spent-output-profit-ratio/'},{l:'CheckOnChain',u:'https://charts.checkonchain.com/btconchain/realised/sthsopr_indicator/sthsopr_indicator_light.html'}]},
-    {id:'stmv',name:'🔁 STH MVRV',         val:'< 1.0',        sig:'bull',st:'✅ Deeply below sell trigger',             thresh:'Sell: 1.3',links:[]},
-    {id:'whal',name:'🐳 Whale Flow',        val:'-270K BTC/30d',sig:'bull',st:'✅ Record accumulation since 2013',       thresh:null,links:[]},
+    {id:'mvrv',name:'📊 MVRV Z-Score',     val:'0.68',        sig:'bull',st:'✅ Deep accumulation zone — historically strong buy',thresh:'Sell: 3.0–3.3',links:[{l:'LookIntoBitcoin',u:'https://www.lookintobitcoin.com/charts/mvrv-zscore/'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/mvrv-zscore/'},{l:'Glassnode',u:'https://studio.glassnode.com/charts/market.MvrvZScore?a=BTC'}]},
+    {id:'nupl',name:'💎 NUPL',             val:'~37%',         sig:'bull',st:'✅ Hope/Optimism — safe accumulation zone',  thresh:'Sell: 63–64%',links:[{l:'LookIntoBitcoin',u:'https://www.lookintobitcoin.com/charts/bitcoin-net-unrealised-profit--loss/'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/relative-unrealized-profit--loss/'},{l:'CoinGlass',u:'https://www.coinglass.com/pro/i/nupl'}]},
+    {id:'sopr',name:'📉 STH SOPR',         val:'0.92',         sig:'bull',st:'✅ Capitulation — contrarian buy signal',    thresh:'Sell at 1.4',links:[{l:'CryptoQuant',u:'https://cryptoquant.com/prochart/77NgyaZgS9pGsa'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/sopr-spent-output-profit-ratio/'},{l:'CheckOnChain',u:'https://charts.checkonchain.com/btconchain/realised/sthsopr_indicator/sthsopr_indicator_light.html'}]},
+    {id:'stmv',name:'🔁 STH MVRV',         val:'< 1.0',        sig:'bull',st:'✅ Deeply below sell trigger',             thresh:'Sell: 1.3',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/short-term-holder-mvrv/'},{l:'CryptoQuant',u:'https://cryptoquant.com/asset/btc/chart/network-indicator/mvrv'}]},
+    {id:'whal',name:'🐳 Whale Flow',        val:'-270K BTC/30d',sig:'bull',st:'✅ Record accumulation since 2013',       thresh:null,links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/bitcoin-portfolio/'},{l:'CryptoQuant Whales',u:'https://cryptoquant.com/asset/btc/chart/network-indicator/supply-held-by-top-addresses'}]},
     {id:'cycl',name:'⚙️ BTC Cycle Flow',   val:'21% STH',     sig:'bull',st:'✅ STH share below sell trigger (30%)',    thresh:'Sell at 30% STH',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/bitcoin-portfolio/cycle-capital-flows/'}]},
     {id:'moreno',name:'🏷️ Bull-Bear Cycle (Moreno)',val:'—', sig:'neu', st:'⚠️ Check CryptoQuant dashboard',            thresh:null,links:[{l:'CryptoQuant',u:'https://cryptoquant.com/community/dashboard/630646ec267b2b05b12f51ca'}]},
-    {id:'everything',name:'🌡️ Everything Indicator',val:'~45',sig:'neu',st:'⚠️ Heated at 55–60. Sell zone >60',         thresh:'Sell: 55–60',links:[]},
+    {id:'everything',name:'🌡️ Everything Indicator',val:'~45',sig:'neu',st:'⚠️ Heated at 55–60. Sell zone >60',         thresh:'Sell: 55–60',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/bitcoin-macro/'}]},
   ],
   sentiment:[
-    {id:'alts2',name:'🌀 Altseason Index',  val:'34/100',    sig:'neu', st:'⚠️ BTC Season — altcoin rotation not yet',  thresh:'Altseason: >75',links:[]},
-    {id:'yt',  name:'📺 YouTube (Crypto)',  val:'Low views', sig:'bull',st:'✅ Retail not FOMO-ing — early stage',       thresh:'Sell: High FOMO views',links:[]},
+    {id:'alts2',name:'🌀 Altseason Index',  val:'35/100',    sig:'neu', st:'⚠️ BTC Season — dom 58–60%. Alts lagging',   thresh:'Altseason: >75',links:[{l:'BlockchainCenter',u:'https://www.blockchaincenter.net/altcoin-season-index/'},{l:'CoinMarketCap',u:'https://coinmarketcap.com/charts/altcoin-season-index/'}]},
+    {id:'yt',  name:'📺 YouTube (Crypto)',  val:'Low views', sig:'bull',st:'✅ Retail not FOMO-ing — early stage signal', thresh:'Sell: High FOMO views',links:[{l:'Google Trends BTC',u:'https://trends.google.com/trends/explore?q=bitcoin&geo=US'},{l:'YouTube Search',u:'https://www.youtube.com/results?search_query=bitcoin+price+prediction'}]},
   ],
   technical:[
-    {id:'rsi', name:'📅 Monthly RSI BTC',  val:'66',         sig:'neu', st:'⚠️ Neutral zone. Buy <30 · Sell >70',       thresh:'Buy <30 · Sell >70',links:[{l:'TradingView',u:'https://www.tradingview.com/chart/?symbol=BTCUSD'}]},
-    {id:'fund',name:'💸 Funding Rate',     val:'—',          sig:'neu', st:'⚠️ Negative=bullish. Sell when >0.3%',      thresh:'Sell when >0.3%',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/bitcoin-funding-rates/'},{l:'Coinalyze',u:'https://coinalyze.net/bitcoin/funding-rate/'}]},
-    {id:'oidom',name:'📊 OI Dominance',   val:'—',          sig:'neu', st:'⚠️ Top signal: Others OI > BTC OI',          thresh:'Top: Others > BTC OI',links:[{l:'Coinalyze Global',u:'https://coinalyze.net/futures-data/global-charts/'}]},
+    {id:'rsi', name:'📅 Weekly RSI BTC',   val:'—',          sig:'neu', st:'⚠️ Auto-fetched. Buy <30 · Sell >70',        thresh:'Buy <30 · Sell >70',links:[{l:'TradingView',u:'https://www.tradingview.com/chart/?symbol=BTCUSD'},{l:'Glassnode',u:'https://studio.glassnode.com/charts/indicators.RsiWeekly?a=BTC'}]},
+    {id:'fund',name:'💸 Funding Rate',     val:'-0.005%',    sig:'bull', st:'✅ Most negative since 2023 — heavy shorts, squeeze likely',thresh:'Sell when >0.3%',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/bitcoin-funding-rates/'},{l:'Coinalyze',u:'https://coinalyze.net/bitcoin/funding-rate/'},{l:'CoinGlass',u:'https://www.coinglass.com/FundingRate/BTC'}]},
+    {id:'oidom',name:'📊 OI Dominance',   val:'—',          sig:'neu', st:'⚠️ Top signal: Others OI > BTC OI',           thresh:'Top: Others > BTC OI',links:[{l:'Coinalyze Global',u:'https://coinalyze.net/futures-data/global-charts/'},{l:'CoinGlass',u:'https://www.coinglass.com/FundingRate'}]},
   ]
 };
 
@@ -1304,11 +1304,11 @@ function rInd(){
       const linksHtml=(ind.links||[]).map(lk=>`<a href="${lk.u}" target="_blank" class="ilink">${lk.l} ↗</a>`).join('');
       const threshBar=ind.thresh?`<div class="ithbar"><div class="ith-lbl">${ind.thresh}</div></div>`:'';
       const col=ind.sig==='bull'?'var(--gr)':ind.sig==='bear'?'var(--rd)':'var(--yw)';
-      const sigCls='s'+{bull:'bull',bear:'bear',neu:'neu'}[ind.sig];
+      const sigCls='s'+({bull:'bull',bear:'bear',neu:'neu'}[ind.sig]||'neu');
       return`<div class="icard">
         <div class="i-hd"><div class="iname">${ind.name}</div><div class="i-lnks">${linksHtml}</div></div>
-        <div class="ival" style="color:${col}">${ind.val}</div>
-        <div class="isig ${sigCls}">${ind.st}</div>
+        <div class="ival" style="color:${col}">${ind.val||'—'}</div>
+        <div class="isig ${sigCls}">${ind.st||''}</div>
         ${threshBar}
         <div class="i-btns"><button class="iedit" onclick="editInd('${ind.id}','${cat}')">edit ✏️</button></div>
       </div>`;
@@ -1322,7 +1322,7 @@ function editInd(id,cat){
   showMod(`<div class="mttl">Update: ${ind.name}</div>
     <div class="fg mb10"><label class="fl">Value</label><input class="fc" id="ei-v" value="${ind.val}"></div>
     <div class="fg mb10"><label class="fl">Signal</label><select class="fc" id="ei-s"><option value="bull" ${ind.sig==='bull'?'selected':''}>✅ Bullish</option><option value="neu" ${ind.sig==='neu'?'selected':''}>⚠️ Neutral</option><option value="bear" ${ind.sig==='bear'?'selected':''}>🔴 Bearish</option></select></div>
-    <div class="fg mb10"><label class="fl">Signal Text</label><input class="fc" id="ei-t" value="${ind.st}"></div>
+    <div class="fg mb10"><label class="fl">Signal Text</label><input class="fc" id="ei-t" value="${ind.st||''}"></div>
     <div class="fg" style="margin-bottom:12px"><label class="fl">Threshold Note</label><input class="fc" id="ei-th" value="${ind.thresh||''}"></div>
     <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveInd('${id}','${cat}')">Save</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
 }
@@ -1349,9 +1349,84 @@ function saveNewInd(cat){
   DB.indicators[cat].push({id:uid(),name:n,val:v,sig:document.getElementById('ni-s').value,st:document.getElementById('ni-t').value,thresh:document.getElementById('ni-th').value||null,links:[],cat});
   save();rInd();closeMod();toast('✅ Indicator added');
 }
-async function refreshInd(){toast('⟳ Refreshing live indicators…');await Promise.allSettled([fetchLive(),fetchBTCMAs()]);}
+async function refreshInd(){toast('⟳ Refreshing live indicators…');await Promise.allSettled([fetchLive(),fetchBTCMAs(),fetchIndicators()]);}
+
+// ── Auto-fetch live data into indicator cards ──
+async function fetchIndicators(){
+  const all=[...DB.indicators.macro,...DB.indicators.onchain,...DB.indicators.sentiment,...DB.indicators.technical];
+  const byId=id=>all.find(i=>i.id===id);
+  const setInd=(id,val,sig,st)=>{const ind=byId(id);if(!ind)return;ind.val=val;ind.sig=sig;ind.st=st;};
+
+  // ① DXY — Vercel proxy → Yahoo Finance (DX-Y.NYB)
+  try{
+    const res=await fetchT('/api/price?symbols=DX-Y.NYB',{},12000);
+    if(res.ok){
+      const d=await res.json();
+      const dxy=d.prices?.['DX-Y.NYB'];
+      if(dxy&&dxy>0){
+        const sig=dxy>106?'bear':dxy>101?'neu':'bull';
+        const st=dxy>106?'🔴 Strong USD — risk asset headwind':dxy>101?'⚠️ USD elevated — watch for reversal':'✅ Declining — risk asset tailwind';
+        setInd('dxy',dxy.toFixed(2),sig,st);
+      }
+    }
+  }catch(e){console.warn('DXY fetch failed:',e);}
+
+  // ② BTC Dominance → alts / alts2 signals (uses window._btcDom set by fetchLive)
+  const dom=window._btcDom;
+  if(dom!=null){
+    const domSig=dom>=55?'neu':dom>=50?'bull':'bear';
+    const domSt=dom>=64?'🔴 >64% BTC season — alts not started':dom>=55?'⚠️ BTC Season — rotate into alts slowly':dom>=50?'🟢 50–55% — start heavy alt rotation':'🟢 <50% — altseason likely active';
+    setInd('alts',`BTC Dom ${dom.toFixed(1)}%`,domSig,domSt);
+    setInd('alts2',`BTC Dom ${dom.toFixed(1)}%`,domSig,domSt);
+  }
+
+  // ③ BTC Weekly RSI — Kraken OHLC (interval=10080 mins = 1 week)
+  try{
+    const res=await fetchT('https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=10080',{},12000);
+    if(res.ok){
+      const json=await res.json();
+      if(!json.error?.length){
+        const key=Object.keys(json.result).find(k=>k!=='last');
+        const closes=json.result[key].map(c=>parseFloat(c[4]));
+        const rsiVal=calcRSI(closes,14);
+        if(rsiVal!=null){
+          const sig=rsiVal<30?'bull':rsiVal>70?'bear':'neu';
+          const st=rsiVal<30?'✅ Oversold — strong accumulation zone':rsiVal>70?'🔴 Overbought — take profits':'⚠️ Neutral zone. Buy <30 · Sell >70';
+          setInd('rsi',rsiVal.toString(),sig,st);
+        }
+      }
+    }
+  }catch(e){console.warn('Weekly RSI fetch failed:',e);}
+
+  // ④ BTC Funding Rate — Binance Futures
+  try{
+    const res=await fetchT('https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT',{},8000);
+    if(res.ok){
+      const d=await res.json();
+      const rate=parseFloat(d.lastFundingRate)*100;
+      if(!isNaN(rate)){
+        const sig=rate<-0.01?'bull':rate>0.1?'bear':'neu';
+        const st=rate<-0.01?'✅ Negative — shorts paying longs (bullish)':rate>0.1?'🔴 High positive — longs overpaying. Leverage overheated':'⚠️ Neutral. Sell signal when >0.3%';
+        setInd('fund',rate.toFixed(4)+'%',sig,st);
+      }
+    }
+  }catch(e){console.warn('Funding rate fetch failed:',e);}
+
+  save();rInd();
+}
 
 // ── BTC Moving Averages (SMA & EMA 50/100/200) ──
+function calcRSI(closes,period=14){
+  if(closes.length<period+1)return null;
+  let gains=0,losses=0;
+  for(let i=closes.length-period;i<closes.length;i++){
+    const diff=closes[i]-closes[i-1];
+    if(diff>0)gains+=diff; else losses+=Math.abs(diff);
+  }
+  if(losses===0)return 100;
+  const rs=(gains/period)/(losses/period);
+  return parseFloat((100-(100/(1+rs))).toFixed(2));
+}
 function calcSMA(closes,period){
   if(closes.length<period)return null;
   return closes.slice(-period).reduce((a,b)=>a+b,0)/period;
@@ -1561,6 +1636,7 @@ async function refreshAll(force=false){
   document.getElementById('upd').textContent='⟳ Refreshing…';
   await Promise.allSettled([refreshCrypto(),fetchLive(),fetchBTCMAs()]);
   await refreshStocks(force); // force=true skips the 5-min cooldown
+  await fetchIndicators();    // auto-fill DXY, Weekly RSI, Funding Rate, Dominance
   chkAlerts();
   document.getElementById('upd').textContent='Updated: '+new Date().toLocaleTimeString();
 }
@@ -1586,6 +1662,19 @@ function clrAll(){if(!confirm('Clear ALL data?'))return;DB={positions:[],alerts:
 function startTimer(){if(timer)clearInterval(timer);const ri=DB.settings.ri||60;if(ri>0)timer=setInterval(refreshAll,ri*1000);}
 
 function initAll(){
+  // Migrate: sync links + updated default values from DEF into saved indicators
+  ['macro','onchain','sentiment','technical'].forEach(cat=>{
+    DB.indicators[cat].forEach(ind=>{
+      const def=(DEF[cat]||[]).find(d=>d.id===ind.id);
+      if(!def)return;
+      // Always sync latest links from DEF
+      ind.links=def.links||[];
+      // Sync name updates from DEF
+      ind.name=def.name;
+      ind.thresh=def.thresh;
+    });
+  });
+
   // Migrate: sync target alerts for any positions that have targets but no linked alert
   DB.positions.forEach(p=>{
     if(p.target&&p.target>0){
