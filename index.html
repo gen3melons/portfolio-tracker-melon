@@ -544,34 +544,27 @@ const GKO={BTC:'bitcoin',ETH:'ethereum',SOL:'solana',HYPE:'hyperliquid',BNB:'bin
 // ═══════════════════════════════
 const DEF={
   macro:[
-    {id:'dxy', name:'💵 DXY Dollar',        val:'98.57',      sig:'bull',st:'✅ Declining — risk asset tailwind',      thresh:null,links:[{l:'TradingView',u:'https://www.tradingview.com/symbols/TVC-DXY/'},{l:'Yahoo Finance',u:'https://finance.yahoo.com/quote/DX-Y.NYB/'}]},
-    {id:'cpi', name:'🔥 CPI (Mar 2026)',    val:'3.3% YoY',  sig:'bear',st:'🔴 Spiked from 2.4% — Iran war energy shock. Expected to worsen',thresh:null,links:[{l:'BLS',u:'https://www.bls.gov/cpi/'},{l:'Trading Economics',u:'https://tradingeconomics.com/united-states/inflation-cpi'}]},
-    {id:'fed', name:'🏦 Fed Rate',           val:'3.50–3.75%',sig:'bear',st:'🔴 On hold. Hike possible 2027. No cuts expected',thresh:null,links:[{l:'Fed Reserve',u:'https://www.federalreserve.gov/monetarypolicy/openmarket.htm'},{l:'CME FedWatch',u:'https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html'}]},
-    {id:'ism', name:'🏭 ISM Mfg PMI',       val:'52.7',      sig:'bull',st:'✅ Fastest expansion since Aug 2022 — 3rd month in a row',thresh:'Sell signal at 60+',links:[{l:'ISM Official',u:'https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/march/'},{l:'Trading Economics',u:'https://tradingeconomics.com/united-states/business-confidence'}]},
-    {id:'m2',  name:'💰 Global M2',         val:'$101T',     sig:'bull',st:'✅ +4.29% (3M) — expanding liquidity',      thresh:null,links:[{l:'FRED M2',u:'https://fred.stlouisfed.org/series/M2SL'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/bitcoin-macro/'}]},
-    {id:'trfs',name:'📦 China Tariffs',     val:'104%+',     sig:'bear',st:'🔴 Escalating trade war — macro uncertainty headwind',thresh:null,links:[{l:'USTR',u:'https://ustr.gov/issue-areas/enforcement/section-301-investigations'},{l:'Reuters',u:'https://www.reuters.com/world/china/'}]},
-    {id:'sprd',name:'📉 Credit Spreads',    val:'Widening',  sig:'bear',st:'🔴 Recession early warning. Watch HY spread levels',thresh:null,links:[{l:'FRED HY Spreads',u:'https://fred.stlouisfed.org/series/BAMLH0A0HYM2EY'},{l:'Trading Economics',u:'https://tradingeconomics.com/united-states/credit-spreads'}]},
-    {id:'alts',name:'🌀 Altseason Index',   val:'35/100',    sig:'neu', st:'⚠️ BTC Season — dom 58–60%. Alts not started',thresh:'Altseason: index >75',links:[{l:'BlockchainCenter',u:'https://www.blockchaincenter.net/altcoin-season-index/'},{l:'CoinMarketCap',u:'https://coinmarketcap.com/charts/altcoin-season-index/'}]},
-    {id:'hyc', name:'📊 HY Credit / BTC Cycles',val:'—',    sig:'neu', st:'⚠️ Sell signal at 80% level',               thresh:'Sell at 80%',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/bitcoin-macro/'}]},
+    {id:'m1',name:'💵 DXY (Dollar Index)',   val:'98.57',     sig:'bull',st:'✅ Declining — risk asset tailwind',             thresh:null,links:[{l:'TradingView',u:'https://www.tradingview.com/symbols/TVC-DXY/'},{l:'Yahoo Finance',u:'https://finance.yahoo.com/quote/DX-Y.NYB/'}]},
+    {id:'m2',name:'💰 Global M2',            val:'$101T',     sig:'bull',st:'✅ +4.29% (3M) — expanding liquidity',           thresh:null,links:[{l:'FRED M2',u:'https://fred.stlouisfed.org/series/M2SL'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/bitcoin-macro/'}]},
+    {id:'m3',name:'🏦 Fed Rate Decision',    val:'3.50–3.75%',sig:'bear',st:'🔴 On hold. Hike possible 2027. No cuts expected',thresh:null,links:[{l:'Fed Reserve',u:'https://www.federalreserve.gov/monetarypolicy/openmarket.htm'},{l:'CME FedWatch',u:'https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html'}]},
+    {id:'m4',name:'🔥 CPI / Inflation',      val:'3.3% YoY', sig:'bear',st:'🔴 Spiked from 2.4% — Iran war energy shock. Expected to worsen',thresh:null,links:[{l:'BLS',u:'https://www.bls.gov/cpi/'},{l:'Trading Economics',u:'https://tradingeconomics.com/united-states/inflation-cpi'}]},
+    {id:'m5',name:'🏭 PMI (Manufacturing)',  val:'52.7',      sig:'bull',st:'✅ Fastest expansion since Aug 2022 — 3rd month',thresh:'Sell signal at 60+',links:[{l:'ISM Official',u:'https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/march/'},{l:'Trading Economics',u:'https://tradingeconomics.com/united-states/business-confidence'}]},
   ],
   onchain:[
-    {id:'mvrv',name:'📊 MVRV Z-Score',     val:'0.68',        sig:'bull',st:'✅ Deep accumulation zone — historically strong buy',thresh:'Sell: 3.0–3.3',links:[{l:'LookIntoBitcoin',u:'https://www.lookintobitcoin.com/charts/mvrv-zscore/'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/mvrv-zscore/'},{l:'Glassnode',u:'https://studio.glassnode.com/charts/market.MvrvZScore?a=BTC'}]},
-    {id:'nupl',name:'💎 NUPL',             val:'~37%',         sig:'bull',st:'✅ Hope/Optimism — safe accumulation zone',  thresh:'Sell: 63–64%',links:[{l:'LookIntoBitcoin',u:'https://www.lookintobitcoin.com/charts/bitcoin-net-unrealised-profit--loss/'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/relative-unrealized-profit--loss/'},{l:'CoinGlass',u:'https://www.coinglass.com/pro/i/nupl'}]},
-    {id:'sopr',name:'📉 STH SOPR',         val:'0.92',         sig:'bull',st:'✅ Capitulation — contrarian buy signal',    thresh:'Sell at 1.4',links:[{l:'CryptoQuant',u:'https://cryptoquant.com/prochart/77NgyaZgS9pGsa'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/sopr-spent-output-profit-ratio/'},{l:'CheckOnChain',u:'https://charts.checkonchain.com/btconchain/realised/sthsopr_indicator/sthsopr_indicator_light.html'}]},
-    {id:'stmv',name:'🔁 STH MVRV',         val:'< 1.0',        sig:'bull',st:'✅ Deeply below sell trigger',             thresh:'Sell: 1.3',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/short-term-holder-mvrv/'},{l:'CryptoQuant',u:'https://cryptoquant.com/asset/btc/chart/network-indicator/mvrv'}]},
-    {id:'whal',name:'🐳 Whale Flow',        val:'-270K BTC/30d',sig:'bull',st:'✅ Record accumulation since 2013',       thresh:null,links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/bitcoin-portfolio/'},{l:'CryptoQuant Whales',u:'https://cryptoquant.com/asset/btc/chart/network-indicator/supply-held-by-top-addresses'}]},
-    {id:'cycl',name:'⚙️ BTC Cycle Flow',   val:'21% STH',     sig:'bull',st:'✅ STH share below sell trigger (30%)',    thresh:'Sell at 30% STH',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/bitcoin-portfolio/cycle-capital-flows/'}]},
-    {id:'moreno',name:'🏷️ Bull-Bear Cycle (Moreno)',val:'—', sig:'neu', st:'⚠️ Check CryptoQuant dashboard',            thresh:null,links:[{l:'CryptoQuant',u:'https://cryptoquant.com/community/dashboard/630646ec267b2b05b12f51ca'}]},
-    {id:'everything',name:'🌡️ Everything Indicator',val:'~45',sig:'neu',st:'⚠️ Heated at 55–60. Sell zone >60',         thresh:'Sell: 55–60',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/bitcoin-macro/'}]},
+    {id:'o1',name:'🔁 BTC Exchange Netflow', val:'Negative',  sig:'bull',st:'✅ Negative netflow = coins leaving exchanges (accumulation)',thresh:null,links:[{l:'CryptoQuant',u:'https://cryptoquant.com/asset/btc/chart/exchange-flows/exchange-netflow-total'},{l:'Glassnode',u:'https://studio.glassnode.com/charts/transactions.TransferVolumeFromExchanges?a=BTC'}]},
+    {id:'o2',name:'💎 NUPL',                 val:'~37%',      sig:'bull',st:'✅ Hope/Optimism — safe accumulation zone',       thresh:'Sell: 63–64%',links:[{l:'LookIntoBitcoin',u:'https://www.lookintobitcoin.com/charts/bitcoin-net-unrealised-profit--loss/'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/relative-unrealized-profit--loss/'},{l:'CoinGlass',u:'https://www.coinglass.com/pro/i/nupl'}]},
+    {id:'o3',name:'📊 MVRV Z-Score',         val:'0.68',      sig:'bull',st:'✅ Deep accumulation zone — historically strong buy',thresh:'Sell: 3.0–3.3',links:[{l:'LookIntoBitcoin',u:'https://www.lookintobitcoin.com/charts/mvrv-zscore/'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/mvrv-zscore/'},{l:'Glassnode',u:'https://studio.glassnode.com/charts/market.MvrvZScore?a=BTC'}]},
+    {id:'o4',name:'⛏️ Puell Multiple',       val:'—',         sig:'neu', st:'⚠️ Buy zone: <0.5. Sell zone: >4',              thresh:'Buy <0.5 · Sell >4',links:[{l:'LookIntoBitcoin',u:'https://www.lookintobitcoin.com/charts/puell-multiple/'},{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/puell-multiple/'}]},
   ],
   sentiment:[
-    {id:'alts2',name:'🌀 Altseason Index',  val:'35/100',    sig:'neu', st:'⚠️ BTC Season — dom 58–60%. Alts lagging',   thresh:'Altseason: >75',links:[{l:'BlockchainCenter',u:'https://www.blockchaincenter.net/altcoin-season-index/'},{l:'CoinMarketCap',u:'https://coinmarketcap.com/charts/altcoin-season-index/'}]},
-    {id:'yt',  name:'📺 YouTube (Crypto)',  val:'Low views', sig:'bull',st:'✅ Retail not FOMO-ing — early stage signal', thresh:'Sell: High FOMO views',links:[{l:'Google Trends BTC',u:'https://trends.google.com/trends/explore?q=bitcoin&geo=US'},{l:'YouTube Search',u:'https://www.youtube.com/results?search_query=bitcoin+price+prediction'}]},
+    {id:'s1',name:'😱 Fear & Greed Index',   val:'46',        sig:'neu', st:'⚠️ Fear — Neutral. Auto-fetched on refresh.',   thresh:'Buy <25 · Sell >75',links:[{l:'Alternative.me',u:'https://alternative.me/crypto/fear-and-greed-index/'},{l:'CoinGlass',u:'https://www.coinglass.com/pro/i/FearGreedIndex'}]},
+    {id:'s2',name:'💸 Funding Rates',        val:'-0.005%',   sig:'bull',st:'✅ Most negative since 2023 — shorts crowded, squeeze likely',thresh:'Sell when >0.3%',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/bitcoin-funding-rates/'},{l:'Coinalyze',u:'https://coinalyze.net/bitcoin/funding-rate/'},{l:'CoinGlass',u:'https://www.coinglass.com/FundingRate/BTC'}]},
+    {id:'s3',name:'📊 Long/Short Ratio',     val:'—',         sig:'neu', st:'⚠️ <1 = more shorts (bullish). Auto-fetched.',  thresh:'Sell signal: >2 sustained',links:[{l:'CoinGlass L/S',u:'https://www.coinglass.com/LongShortRatio'},{l:'Coinalyze',u:'https://coinalyze.net/bitcoin/long-short-ratio/'}]},
   ],
   technical:[
-    {id:'rsi', name:'📅 Weekly RSI BTC',   val:'—',          sig:'neu', st:'⚠️ Auto-fetched. Buy <30 · Sell >70',        thresh:'Buy <30 · Sell >70',links:[{l:'TradingView',u:'https://www.tradingview.com/chart/?symbol=BTCUSD'},{l:'Glassnode',u:'https://studio.glassnode.com/charts/indicators.RsiWeekly?a=BTC'}]},
-    {id:'fund',name:'💸 Funding Rate',     val:'-0.005%',    sig:'bull', st:'✅ Most negative since 2023 — heavy shorts, squeeze likely',thresh:'Sell when >0.3%',links:[{l:'Bitcoin Mag Pro',u:'https://www.bitcoinmagazinepro.com/charts/bitcoin-funding-rates/'},{l:'Coinalyze',u:'https://coinalyze.net/bitcoin/funding-rate/'},{l:'CoinGlass',u:'https://www.coinglass.com/FundingRate/BTC'}]},
-    {id:'oidom',name:'📊 OI Dominance',   val:'—',          sig:'neu', st:'⚠️ Top signal: Others OI > BTC OI',           thresh:'Top: Others > BTC OI',links:[{l:'Coinalyze Global',u:'https://coinalyze.net/futures-data/global-charts/'},{l:'CoinGlass',u:'https://www.coinglass.com/FundingRate'}]},
+    {id:'t1',name:'📅 BTC Weekly RSI',       val:'—',         sig:'neu', st:'⚠️ Auto-fetched. Buy <30 · Sell >70',           thresh:'Buy <30 · Sell >70',links:[{l:'TradingView',u:'https://www.tradingview.com/chart/?symbol=BTCUSD'},{l:'Glassnode',u:'https://studio.glassnode.com/charts/indicators.RsiWeekly?a=BTC'}]},
+    {id:'t2',name:'₿ BTC Dominance',         val:'57.4%',     sig:'neu', st:'⚠️ 55–64% — Accumulate alts aggressively. Auto-fetched.',thresh:'Altseason: <50%',links:[{l:'TradingView BTC.D',u:'https://www.tradingview.com/symbols/BTC.D/'},{l:'CoinMarketCap',u:'https://coinmarketcap.com/charts/bitcoin-dominance/'}]},
+    {id:'t3',name:'🌐 Total Market Cap',     val:'—',         sig:'neu', st:'⚠️ Track for overall crypto market health. Auto-fetched.',thresh:null,links:[{l:'CoinMarketCap',u:'https://coinmarketcap.com/charts/'},{l:'TradingView',u:'https://www.tradingview.com/symbols/CRYPTOCAP-TOTAL/'}]},
   ]
 };
 
@@ -1051,6 +1044,7 @@ async function fetchLive(){
     if(!res.ok)throw new Error(res.status);
     const json=await res.json();
     const fg=json.data[0];const v=parseInt(fg.value);
+    window._fgVal=v;
     const col=v<=25?'var(--rd)':v<=50?'var(--yw)':v>=75?'var(--gr)':'var(--tx)';
     const sig=v<=25?'sbear':v<=50?'sneu':v>=75?'sbull':'sneu';
     document.getElementById('i-fg').innerHTML=`<div class="live-name">😱 Fear &amp; Greed <a href="https://www.coinglass.com/pro/i/FearGreedIndex" target="_blank" class="ilink">↗</a></div><div class="live-val" style="color:${col}">${v}</div><div class="live-sig ${sig}">${fg.value_classification} — ${v<=25?'Buy zone':v>=75?'Sell zone':'Neutral'}</div>`;
@@ -1064,7 +1058,7 @@ async function fetchLive(){
       const res=await fetchT('https://api.coinpaprika.com/v1/global',{cache:'no-cache'});
       if(!res.ok)throw new Error(res.status);
       const d=await res.json();
-      dom=d.bitcoin_dominance_percentage;mc=d.market_cap_usd;
+      dom=d.bitcoin_dominance_percentage;mc=d.market_cap_usd;window._globalMcap=mc;
     }catch{
       const res=await fetchT('https://api.coingecko.com/api/v3/global',{cache:'no-cache'});
       if(!res.ok)throw new Error(res.status);
@@ -1179,17 +1173,17 @@ function rRec(){
   else if(m2&&m2.sig==='bear')
     recs.push({icon:'💰',cls:'bear',text:'Global M2 contracting — liquidity headwind. Avoid aggressive buys until M2 turns.'});
 
-  // Credit spreads
-  const sprd=get('sprd');
-  if(sprd&&sprd.sig==='bear')
-    recs.push({icon:'⚠️',cls:'bear',text:'Credit spreads widening — early recession signal. Increase stablecoin buffer to 20–30%.'});
+  // CPI / inflation
+  const cpi=get('m4');
+  if(cpi&&cpi.sig==='bear')
+    recs.push({icon:'🔥',cls:'bear',text:'CPI elevated — Fed unlikely to cut. Inflation headwind for risk assets. Keep stablecoin buffer.'});
 
   // Tariffs / macro headwinds
   if(macroBears>=3)
     recs.push({icon:'🌍',cls:'bear',text:`${macroBears} macro headwinds active. Keep equities lean and avoid leverage.`});
 
-  // Altseason
-  const alts=get('alts')||get('alts2');
+  // Altseason (t2 = BTC Dominance card)
+  const alts=get('t2');
   if(alts&&alts.sig==='neu'&&score>=45)
     recs.push({icon:'🌀',cls:'neu',text:'BTC season still active — keep 80%+ of crypto in BTC/ETH until dominance drops below 50%.'});
   else if(alts&&alts.sig==='bull')
@@ -1201,24 +1195,26 @@ function rRec(){
   else if(DB.indicators.sentiment.filter(i=>i.sig==='bear').length>=1)
     recs.push({icon:'😱',cls:'bear',text:'Sentiment turning greedy — historically a sell signal. Consider taking partial profits.'});
 
-  // RSI
-  const rsi=get('rsi');
+  // RSI (t1 = BTC Weekly RSI)
+  const rsi=get('t1');
   if(rsi&&rsi.sig==='bear')
-    recs.push({icon:'📐',cls:'bear',text:'Monthly RSI in overbought territory. Take profits on crypto — do not add new positions at these levels.'});
+    recs.push({icon:'📐',cls:'bear',text:'Weekly RSI overbought — take profits on crypto. Do not add new positions at these levels.'});
   else if(rsi&&rsi.sig==='neu')
-    recs.push({icon:'📐',cls:'neu',text:'Monthly RSI approaching sell zone. Consider partial profit-taking if up significantly on positions.'});
+    recs.push({icon:'📐',cls:'neu',text:'Weekly RSI neutral. Monitor for move above 70 as exit signal.'});
 
-  // DXY
-  const dxy=get('dxy');
+  // DXY (m1)
+  const dxy=get('m1');
   if(dxy&&dxy.sig==='bull')
     recs.push({icon:'💵',cls:'bull',text:'DXY declining — dollar weakness is a tailwind for BTC and commodities. Hold gold/silver exposure.'});
   else if(dxy&&dxy.sig==='bear')
     recs.push({icon:'💵',cls:'bear',text:'DXY strengthening — risk asset headwind. Reduce altcoin exposure and hold more USD stablecoins.'});
 
-  // Whale flow
-  const whal=get('whal');
-  if(whal&&whal.sig==='bull')
-    recs.push({icon:'🐳',cls:'bull',text:'Whale accumulation in progress — smart money buying. Align with whales, not against them.'});
+  // Funding Rate (s2)
+  const fund=get('s2');
+  if(fund&&fund.sig==='bull')
+    recs.push({icon:'💸',cls:'bull',text:'Funding rates negative — shorts crowded. High probability of short squeeze. Good entry zone.'});
+  else if(fund&&fund.sig==='bear')
+    recs.push({icon:'💸',cls:'bear',text:'Funding rates highly positive — leveraged longs overextended. Elevated liquidation risk. Reduce exposure.'});
 
   // BTC Dominance live tiers
   const dom=window._btcDom;
@@ -1233,7 +1229,7 @@ function rRec(){
       recs.push({icon:'🌀',cls:'bear',text:`BTC Dominance ${dom.toFixed(1)}% — Below 50%. Rotate capital to stablecoins. Altseason likely peaking.`});
   }
 
-  // RSI numeric value (reads the actual number from the indicator val field)
+  // RSI numeric value (reads the actual number from the t1 indicator val field)
   if(rsi){
     const rsiVal=parseFloat(rsi.val);
     if(!isNaN(rsiVal)){
@@ -1357,7 +1353,7 @@ async function fetchIndicators(){
   const byId=id=>all.find(i=>i.id===id);
   const setInd=(id,val,sig,st)=>{const ind=byId(id);if(!ind)return;ind.val=val;ind.sig=sig;ind.st=st;};
 
-  // ① DXY — Vercel proxy → Yahoo Finance (DX-Y.NYB)
+  // ① DXY — Vercel proxy → Yahoo Finance (m1)
   try{
     const res=await fetchT('/api/price?symbols=DX-Y.NYB',{},12000);
     if(res.ok){
@@ -1366,21 +1362,36 @@ async function fetchIndicators(){
       if(dxy&&dxy>0){
         const sig=dxy>106?'bear':dxy>101?'neu':'bull';
         const st=dxy>106?'🔴 Strong USD — risk asset headwind':dxy>101?'⚠️ USD elevated — watch for reversal':'✅ Declining — risk asset tailwind';
-        setInd('dxy',dxy.toFixed(2),sig,st);
+        setInd('m1',dxy.toFixed(2),sig,st);
       }
     }
   }catch(e){console.warn('DXY fetch failed:',e);}
 
-  // ② BTC Dominance → alts / alts2 signals (uses window._btcDom set by fetchLive)
-  const dom=window._btcDom;
-  if(dom!=null){
-    const domSig=dom>=55?'neu':dom>=50?'bull':'bear';
-    const domSt=dom>=64?'🔴 >64% BTC season — alts not started':dom>=55?'⚠️ BTC Season — rotate into alts slowly':dom>=50?'🟢 50–55% — start heavy alt rotation':'🟢 <50% — altseason likely active';
-    setInd('alts',`BTC Dom ${dom.toFixed(1)}%`,domSig,domSt);
-    setInd('alts2',`BTC Dom ${dom.toFixed(1)}%`,domSig,domSt);
+  // ② Fear & Greed → s1 (uses window._fgVal set by fetchLive)
+  if(window._fgVal!=null){
+    const v=window._fgVal;
+    const sig=v<=25?'bull':v>=75?'bear':'neu';
+    const st=v<=25?'✅ Extreme Fear — buy zone':v>=75?'🔴 Extreme Greed — sell zone':'⚠️ '+(v<=50?'Fear':'Greed')+' — Neutral';
+    setInd('s1',v.toString(),sig,st);
   }
 
-  // ③ BTC Weekly RSI — Kraken OHLC (interval=10080 mins = 1 week)
+  // ③ BTC Dominance → t2 (uses window._btcDom set by fetchLive)
+  const dom=window._btcDom;
+  if(dom!=null){
+    const domSig=dom>=64?'neu':dom>=55?'neu':dom>=50?'bull':'bear';
+    const domSt=dom>=64?'🔴 >64% BTC season — alts not started':dom>=55?'⚠️ 55–64% — Accumulate alts aggressively':dom>=50?'🟢 50–55% — start heavy alt rotation':'🟢 <50% — altseason likely active';
+    setInd('t2',dom.toFixed(1)+'%',domSig,domSt);
+  }
+
+  // ④ Total Market Cap → t3 (uses window._globalMcap set by fetchLive)
+  if(window._globalMcap!=null){
+    const mc=window._globalMcap;
+    const t=mc>=2.5e12?'bear':mc>=1.5e12?'neu':'bull';
+    const mcStr=mc>=1e12?'$'+(mc/1e12).toFixed(2)+'T':'$'+(mc/1e9).toFixed(0)+'B';
+    setInd('t3',mcStr,t,mc>=2.5e12?'🔴 Market at highs — elevated risk':mc>=1.5e12?'⚠️ Mid-cycle — monitor closely':'✅ Early cycle levels — accumulate');
+  }
+
+  // ⑤ BTC Weekly RSI — Kraken OHLC (interval=10080 = 1 week) → t1
   try{
     const res=await fetchT('https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=10080',{},12000);
     if(res.ok){
@@ -1392,13 +1403,13 @@ async function fetchIndicators(){
         if(rsiVal!=null){
           const sig=rsiVal<30?'bull':rsiVal>70?'bear':'neu';
           const st=rsiVal<30?'✅ Oversold — strong accumulation zone':rsiVal>70?'🔴 Overbought — take profits':'⚠️ Neutral zone. Buy <30 · Sell >70';
-          setInd('rsi',rsiVal.toString(),sig,st);
+          setInd('t1',rsiVal.toString(),sig,st);
         }
       }
     }
   }catch(e){console.warn('Weekly RSI fetch failed:',e);}
 
-  // ④ BTC Funding Rate — Binance Futures
+  // ⑥ BTC Funding Rate → s2 — Binance Futures
   try{
     const res=await fetchT('https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT',{},8000);
     if(res.ok){
@@ -1406,11 +1417,27 @@ async function fetchIndicators(){
       const rate=parseFloat(d.lastFundingRate)*100;
       if(!isNaN(rate)){
         const sig=rate<-0.01?'bull':rate>0.1?'bear':'neu';
-        const st=rate<-0.01?'✅ Negative — shorts paying longs (bullish)':rate>0.1?'🔴 High positive — longs overpaying. Leverage overheated':'⚠️ Neutral. Sell signal when >0.3%';
-        setInd('fund',rate.toFixed(4)+'%',sig,st);
+        const st=rate<-0.01?'✅ Negative — shorts paying longs (bullish)':rate>0.1?'🔴 High positive — leverage overheated':'⚠️ Neutral. Sell signal when >0.3%';
+        setInd('s2',rate.toFixed(4)+'%',sig,st);
       }
     }
   }catch(e){console.warn('Funding rate fetch failed:',e);}
+
+  // ⑦ Long/Short Ratio → s3 — Binance Futures
+  try{
+    const res=await fetchT('https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=BTCUSDT&period=1h&limit=1',{},8000);
+    if(res.ok){
+      const arr=await res.json();
+      if(Array.isArray(arr)&&arr.length){
+        const ratio=parseFloat(arr[0].longShortRatio);
+        if(!isNaN(ratio)){
+          const sig=ratio<0.9?'bull':ratio>1.5?'bear':'neu';
+          const st=ratio<0.9?'✅ More shorts than longs — contrarian buy signal':ratio>1.5?'🔴 Overcrowded longs — elevated liquidation risk':'⚠️ Balanced. Watch for divergence from price.';
+          setInd('s3',ratio.toFixed(2),sig,st);
+        }
+      }
+    }
+  }catch(e){console.warn('Long/Short ratio fetch failed:',e);}
 
   save();rInd();
 }
@@ -1662,18 +1689,21 @@ function clrAll(){if(!confirm('Clear ALL data?'))return;DB={positions:[],alerts:
 function startTimer(){if(timer)clearInterval(timer);const ri=DB.settings.ri||60;if(ri>0)timer=setInterval(refreshAll,ri*1000);}
 
 function initAll(){
-  // Migrate: sync links + updated default values from DEF into saved indicators
+  // Migrate: sync DEF data into saved indicators (links, names, and empty values)
   ['macro','onchain','sentiment','technical'].forEach(cat=>{
     DB.indicators[cat].forEach(ind=>{
       const def=(DEF[cat]||[]).find(d=>d.id===ind.id);
       if(!def)return;
-      // Always sync latest links from DEF
       ind.links=def.links||[];
-      // Sync name updates from DEF
       ind.name=def.name;
       ind.thresh=def.thresh;
+      // Fill in value/signal/text if currently empty or undefined
+      if(!ind.val||ind.val===''||ind.val==='undefined'){
+        ind.val=def.val;ind.sig=def.sig;ind.st=def.st;
+      }
     });
   });
+  save();
 
   // Migrate: sync target alerts for any positions that have targets but no linked alert
   DB.positions.forEach(p=>{
