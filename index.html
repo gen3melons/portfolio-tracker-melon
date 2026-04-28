@@ -236,6 +236,43 @@ tr.row-near td{background:rgba(234,179,8,.05)!important}
 .div{border:none;border-top:1px solid var(--bdr);margin:10px 0}
 .api-err{background:var(--rdd);border:1px solid rgba(239,68,68,.3);border-radius:7px;padding:7px 10px;font-size:11px;color:var(--rd);margin-bottom:8px}
 .api-ok{background:var(--grd);border:1px solid rgba(34,197,94,.3);border-radius:7px;padding:7px 10px;font-size:11px;color:var(--gr);margin-bottom:8px}
+/* ── Yield Tab ── */
+.yield-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.yield-stat{background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:10px 14px}
+.yield-stat-lbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.yield-stat-val{font-size:18px;font-weight:700;color:var(--tx)}
+.yield-stat-sub{font-size:11px;color:var(--mu);margin-top:2px}
+.yield-section{background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;padding:14px 16px}
+.yield-table{width:100%;border-collapse:collapse;font-size:12px}
+.yield-table th{text-align:left;padding:6px 8px;color:var(--mu);font-weight:500;border-bottom:1px solid var(--bdr);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.yield-table td{padding:8px 8px;border-bottom:1px solid var(--bdr2);vertical-align:middle}
+.yield-table tr:last-child td{border-bottom:none}
+.yield-table tr:hover td{background:var(--bg3)}
+.ybadge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10px;font-weight:600}
+.ybull{background:var(--grd);color:var(--gr)}.ybear{background:var(--rdd);color:var(--rd)}.yneu{background:rgba(234,179,8,.1);color:var(--yw)}
+.il-safe{color:var(--gr)}.il-warn{color:var(--yw)}.il-risk{color:var(--or)}.il-danger{color:var(--rd)}
+.yempty{text-align:center;padding:20px;color:var(--mu);font-size:12px}
+@media(max-width:700px){.yield-bar{grid-template-columns:1fr 1fr}.yield-table{display:block;overflow-x:auto}}
+/* ── DCA & Saylor ── */
+.dca-stat{background:var(--bg3);border:1px solid var(--bdr2);border-radius:8px;padding:8px 12px}
+.dca-stat-lbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.04em}
+.dca-stat-val{font-size:15px;font-weight:700;margin-top:2px}
+.saylor-status{border-radius:12px;padding:14px 16px;margin-bottom:12px;border:1px solid}
+.saylor-profit{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.25)}
+.saylor-warn{background:rgba(234,179,8,.07);border-color:rgba(234,179,8,.25)}
+.saylor-risk{background:rgba(249,115,22,.07);border-color:rgba(249,115,22,.25)}
+.saylor-danger{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.25)}
+.saylor-rule{font-size:22px;font-weight:800;margin:4px 0}
+.saylor-sub{font-size:12px;color:var(--mu)}
+.saylor-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.saylor-cell{background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center}
+.saylor-cell-lbl{font-size:10px;color:var(--mu);text-transform:uppercase}
+.saylor-cell-val{font-size:14px;font-weight:700;margin-top:3px}
+.saylor-tiers{margin-top:10px;display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.saylor-tier{border-radius:7px;padding:7px 10px;font-size:11px;border:1px solid var(--bdr2)}
+.saylor-tier.active{border-color:var(--bl);background:rgba(59,130,246,.08);font-weight:700}
+.saylor-log-row td{padding:5px 8px;border-bottom:1px solid var(--bdr2);font-size:12px}
+@media(max-width:700px){.saylor-grid{grid-template-columns:1fr 1fr}.saylor-tiers{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -261,6 +298,7 @@ tr.row-near td{background:rgba(234,179,8,.05)!important}
   <button class="tab on" onclick="st('portfolio',this)">📊 Portfolio</button>
   <button class="tab" id="tab-alerts" onclick="st('alerts',this)">🔔 Alerts<span id="alr-badge" style="display:none;margin-left:5px;background:var(--rd);color:#fff;font-size:10px;font-weight:700;padding:1px 5px;border-radius:8px;vertical-align:middle"></span></button>
   <button class="tab" onclick="st('indicators',this)">🌍 Indicators</button>
+  <button class="tab" onclick="st('yield',this)">💰 Yield</button>
   <button class="tab" onclick="st('settings',this)">⚙️ Settings</button>
 </nav>
 
@@ -437,6 +475,64 @@ tr.row-near td{background:rgba(234,179,8,.05)!important}
   </div>
 </div>
 
+<!-- ═══ YIELD ═══ -->
+<div id="p-yield" class="pnl">
+
+  <!-- Summary bar -->
+  <div class="yield-bar" id="yield-bar"></div>
+
+  <!-- STAKING -->
+  <div class="yield-section">
+    <div class="hdb" style="margin-bottom:10px">
+      <div class="ct">🔒 Staking</div>
+      <button class="btn bsm bg" onclick="showAddStaking()">+ Add Position</button>
+    </div>
+    <div id="stk-list"></div>
+  </div>
+
+  <!-- LIQUIDITY POOLS -->
+  <!-- (existing LP section stays here) -->
+
+  <!-- DCA & CYCLE TRADE -->
+  <div class="yield-section" style="margin-top:20px">
+    <div class="hdb" style="margin-bottom:14px">
+      <div class="ct">📈 DCA & Cycle Trade</div>
+    </div>
+
+    <!-- DCA Tracker -->
+    <div style="margin-bottom:18px">
+      <div class="hdb" style="margin-bottom:8px">
+        <div style="font-size:13px;font-weight:600;color:var(--mu)">₿ BTC DCA Log</div>
+        <button class="btn bsm bg" onclick="showAddDCA()">+ Add Buy</button>
+      </div>
+      <div id="dca-summary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px"></div>
+      <div id="dca-list"></div>
+    </div>
+
+    <div class="div"></div>
+
+    <!-- Saylor Strategy -->
+    <div style="margin-top:14px">
+      <div class="hdb" style="margin-bottom:4px">
+        <div style="font-size:13px;font-weight:600;color:var(--mu)">⚡ Saylor Leveraged Cycle Trade</div>
+        <button class="btn bsm bg" onclick="showSaylorSetup()">⚙️ Setup</button>
+      </div>
+      <div style="font-size:11px;color:var(--mu);margin-bottom:12px">10x BTC long · DCA-down strategy · Take profit 15–20%</div>
+      <div id="saylor-panel"></div>
+    </div>
+  </div>
+
+  <!-- LIQUIDITY POOLS original -->
+  <div class="yield-section" style="margin-top:20px">
+    <div class="hdb" style="margin-bottom:10px">
+      <div class="ct">💧 Liquidity Pools</div>
+      <button class="btn bsm bg" onclick="showAddLP()">+ Add Position</button>
+    </div>
+    <div id="lp-list"></div>
+  </div>
+
+</div>
+
 <!-- ═══ SETTINGS ═══ -->
 <div id="p-settings" class="pnl">
   <div class="g2">
@@ -571,7 +667,7 @@ const DEF={
 // ═══════════════════════════════
 // DB
 // ═══════════════════════════════
-let DB={positions:[],alerts:[],cash:0,etfCash:0,indicators:{macro:[...DEF.macro.map(x=>({...x,links:[...(x.links||[])]}))],onchain:[...DEF.onchain.map(x=>({...x,links:[...(x.links||[])]}))],sentiment:[...DEF.sentiment.map(x=>({...x,links:[...(x.links||[])]}))],technical:[...DEF.technical.map(x=>({...x,links:[...(x.links||[])]}))],},settings:{tdKey:'',fmpKey:'',avKey:'',ri:60}};
+let DB={positions:[],alerts:[],cash:0,etfCash:0,staking:[],lp:[],dcaLog:[],saylor:{capital:3000,itemSize:100,leverage:10,entryPrice:0,startDate:null,currentPrice:0,log:[]},indicators:{macro:[...DEF.macro.map(x=>({...x,links:[...(x.links||[])]}))],onchain:[...DEF.onchain.map(x=>({...x,links:[...(x.links||[])]}))],sentiment:[...DEF.sentiment.map(x=>({...x,links:[...(x.links||[])]}))],technical:[...DEF.technical.map(x=>({...x,links:[...(x.links||[])]}))],},settings:{tdKey:'',fmpKey:'',avKey:'',ri:60}};
 let timer=null;
 
 function save(){try{localStorage.setItem('ptv4',JSON.stringify(DB));}catch(e){}}
@@ -584,6 +680,10 @@ function load(){
       DB.alerts=d.alerts||[];
       DB.cash=d.cash||0;
       DB.etfCash=d.etfCash||0;
+      DB.staking=d.staking||[];
+      DB.lp=d.lp||[];
+      DB.dcaLog=d.dcaLog||[];
+      if(d.saylor)DB.saylor={...DB.saylor,...d.saylor};
       DB.settings={...DB.settings,...(d.settings||{})};
       if(d.indicators){
         ['macro','onchain','sentiment','technical'].forEach(cat=>{
@@ -1659,11 +1759,378 @@ async function refreshStocks(force=false){
   if(!DB.settings.tdKey&&(usPos.length||mp.length)) toast('⚠️ Add a Twelve Data key in Settings for stock & metal prices','twarn');
 }
 
+// ═══════════════════════════════
+// YIELD — STAKING & LIQUIDITY POOLS
+// ═══════════════════════════════
+
+// price lookup: try existing positions first, then window._priceCache
+window._priceCache={};
+function yPrice(tk){
+  const upper=tk.toUpperCase();
+  const pos=DB.positions.find(p=>p.tk&&p.tk.toUpperCase()===upper);
+  if(pos&&pos.cp)return pos.cp;
+  return window._priceCache[upper]||null;
+}
+
+function calcIL(initP1,initP2,curP1,curP2){
+  if(!initP1||!initP2||!curP1||!curP2)return null;
+  const r=(curP1/curP2)/(initP1/initP2);
+  return(2*Math.sqrt(r)/(1+r)-1)*100;
+}
+
+function rYield(){
+  // ── build price cache from position data ──
+  DB.positions.forEach(p=>{if(p.cp)window._priceCache[p.tk.toUpperCase()]=p.cp;});
+
+  const now=Date.now();
+  let totalStaked=0,totalLP=0,totalEarned=0;
+
+  // ── STAKING ──
+  const stkEl=document.getElementById('stk-list');
+  if(!DB.staking.length){
+    stkEl.innerHTML='<div class="yempty">No staking positions yet. Click + Add Position to start.</div>';
+  }else{
+    let rows='';
+    DB.staking.forEach(s=>{
+      const days=(now-s.startDate)/(86400000);
+      const price=yPrice(s.asset)||0;
+      const curVal=s.amount*price;
+      const earnedTok=s.amount*(s.apy/100/365)*days;
+      const earnedUSD=earnedTok*price;
+      totalStaked+=curVal;totalEarned+=earnedUSD;
+      const apyCls=s.apy>=15?'ybull':s.apy>=5?'yneu':'ybadge';
+      rows+=`<tr>
+        <td><strong>${s.asset}</strong><br><span class="txm txs">${s.platform}</span></td>
+        <td>${s.amount.toLocaleString('en-US',{maximumFractionDigits:6})}</td>
+        <td>${price?fmtV(curVal):'—'}</td>
+        <td><span class="ybadge ${apyCls}">${s.apy}% APY</span></td>
+        <td>${Math.floor(days)}d</td>
+        <td style="color:var(--gr)">${price?'+'+earnedTok.toFixed(6)+' ('+fmtV(earnedUSD)+')':'—'}</td>
+        <td><button class="btn bsm" onclick="editStaking('${s.id}')">✏️</button> <button class="btn bsm" onclick="delStaking('${s.id}')" style="color:var(--rd)">✕</button></td>
+      </tr>`;
+    });
+    stkEl.innerHTML=`<table class="yield-table"><thead><tr><th>Asset / Platform</th><th>Amount</th><th>Value</th><th>APY</th><th>Age</th><th>Est. Earned</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  // ── LIQUIDITY POOLS ──
+  const lpEl=document.getElementById('lp-list');
+  if(!DB.lp.length){
+    lpEl.innerHTML='<div class="yempty">No LP positions yet. Click + Add Position to start.</div>';
+  }else{
+    let rows='';
+    DB.lp.forEach(p=>{
+      const days=(now-p.startDate)/(86400000);
+      const earnedFees=p.initValue*(p.apr/100/365)*days+( p.feesEarned||0);
+      totalLP+=p.initValue;totalEarned+=earnedFees;
+      // IL calculation
+      const curP1=yPrice(p.asset1);
+      const curP2=yPrice(p.asset2)||p.initPrice2;
+      const il=calcIL(p.initPrice1,p.initPrice2,curP1||p.initPrice1,curP2);
+      const ilPct=il!=null?il:0;
+      const ilCls=ilPct>-2?'il-safe':ilPct>-5?'il-warn':ilPct>-10?'il-risk':'il-danger';
+      const curVal=p.initValue+earnedFees+(p.initValue*(ilPct/100));
+      rows+=`<tr>
+        <td><strong>${p.pair}</strong><br><span class="txm txs">${p.protocol}</span></td>
+        <td>${fmtV(p.initValue)}</td>
+        <td><span class="ybadge ybull">${p.apr}% APR</span></td>
+        <td>${Math.floor(days)}d</td>
+        <td style="color:var(--gr)">+${fmtV(earnedFees)}</td>
+        <td class="${ilCls}">${il!=null?ilPct.toFixed(2)+'%':'—'}</td>
+        <td>${fmtV(curVal)}</td>
+        <td><button class="btn bsm" onclick="editLP('${p.id}')">✏️</button> <button class="btn bsm" onclick="delLP('${p.id}')" style="color:var(--rd)">✕</button></td>
+      </tr>`;
+    });
+    lpEl.innerHTML=`<table class="yield-table"><thead><tr><th>Pair / Protocol</th><th>Deposited</th><th>APR</th><th>Age</th><th>Fees Earned</th><th>Imp. Loss</th><th>Est. Value</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  // ── DCA & Saylor ──
+  rDCA();rSaylor();
+
+  // ── Summary bar ──
+  const total=totalStaked+totalLP;
+  const blendedAPY=total>0?DB.staking.reduce((a,s)=>{
+    const v=(yPrice(s.asset)||0)*s.amount;return a+(v*s.apy/100);},0)/Math.max(total,1)*100:0;
+  document.getElementById('yield-bar').innerHTML=`
+    <div class="yield-stat"><div class="yield-stat-lbl">Total Staked</div><div class="yield-stat-val">${fmtV(totalStaked)}</div><div class="yield-stat-sub">${DB.staking.length} position${DB.staking.length!==1?'s':''}</div></div>
+    <div class="yield-stat"><div class="yield-stat-lbl">Total in LPs</div><div class="yield-stat-val">${fmtV(totalLP)}</div><div class="yield-stat-sub">${DB.lp.length} pool${DB.lp.length!==1?'s':''}</div></div>
+    <div class="yield-stat"><div class="yield-stat-lbl">Est. Earned</div><div class="yield-stat-val" style="color:var(--gr)">${fmtV(totalEarned)}</div><div class="yield-stat-sub">since entry dates</div></div>
+    <div class="yield-stat"><div class="yield-stat-lbl">Blended APY</div><div class="yield-stat-val">${blendedAPY>0?blendedAPY.toFixed(1)+'%':'—'}</div><div class="yield-stat-sub">staking only</div></div>`;
+}
+
+// ── STAKING CRUD ──
+function showAddStaking(){
+  showMod(`<div class="mttl">Add Staking Position</div>
+    <div class="fg mb10"><label class="fl">Asset (ticker)</label><input class="fc" id="sa-tk" placeholder="e.g. ETH, SOL, BTC"></div>
+    <div class="fg mb10"><label class="fl">Platform</label><input class="fc" id="sa-pl" placeholder="e.g. Lido, Phantom, NEXO, Kraken"></div>
+    <div class="fg mb10"><label class="fl">Amount Staked</label><input class="fc" id="sa-am" type="number" step="any" placeholder="e.g. 2.5"></div>
+    <div class="fg mb10"><label class="fl">APY %</label><input class="fc" id="sa-ap" type="number" step="any" placeholder="e.g. 4.5"></div>
+    <div class="fg mb10"><label class="fl">Start Date</label><input class="fc" id="sa-dt" type="date"></div>
+    <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveAddStaking()">Add</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
+  document.getElementById('sa-dt').value=new Date().toISOString().slice(0,10);
+}
+function saveAddStaking(){
+  const tk=document.getElementById('sa-tk').value.trim().toUpperCase();
+  const pl=document.getElementById('sa-pl').value.trim();
+  const am=parseFloat(document.getElementById('sa-am').value);
+  const ap=parseFloat(document.getElementById('sa-ap').value);
+  const dt=document.getElementById('sa-dt').value;
+  if(!tk||!pl||isNaN(am)||isNaN(ap)){toast('Fill all fields','twarn');return;}
+  DB.staking.push({id:uid(),asset:tk,platform:pl,amount:am,apy:ap,startDate:new Date(dt).getTime()});
+  save();rYield();closeMod();toast('✅ Staking position added');
+}
+function editStaking(id){
+  const s=DB.staking.find(x=>x.id===id);if(!s)return;
+  showMod(`<div class="mttl">Edit: ${s.asset} on ${s.platform}</div>
+    <div class="fg mb10"><label class="fl">Asset</label><input class="fc" id="se-tk" value="${s.asset}"></div>
+    <div class="fg mb10"><label class="fl">Platform</label><input class="fc" id="se-pl" value="${s.platform}"></div>
+    <div class="fg mb10"><label class="fl">Amount</label><input class="fc" id="se-am" type="number" step="any" value="${s.amount}"></div>
+    <div class="fg mb10"><label class="fl">APY %</label><input class="fc" id="se-ap" type="number" step="any" value="${s.apy}"></div>
+    <div class="fg mb10"><label class="fl">Start Date</label><input class="fc" id="se-dt" type="date" value="${new Date(s.startDate).toISOString().slice(0,10)}"></div>
+    <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveEditStaking('${id}')">Save</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
+}
+function saveEditStaking(id){
+  const s=DB.staking.find(x=>x.id===id);if(!s)return;
+  s.asset=document.getElementById('se-tk').value.trim().toUpperCase();
+  s.platform=document.getElementById('se-pl').value.trim();
+  s.amount=parseFloat(document.getElementById('se-am').value);
+  s.apy=parseFloat(document.getElementById('se-ap').value);
+  s.startDate=new Date(document.getElementById('se-dt').value).getTime();
+  save();rYield();closeMod();toast('✅ Updated');
+}
+function delStaking(id){if(!confirm('Remove staking position?'))return;DB.staking=DB.staking.filter(x=>x.id!==id);save();rYield();toast('Removed');}
+
+// ── LP CRUD ──
+function showAddLP(){
+  showMod(`<div class="mttl">Add Liquidity Pool</div>
+    <div class="fg mb10"><label class="fl">Pair (e.g. BTC-ETH)</label><input class="fc" id="la-pr" placeholder="BTC-ETH"></div>
+    <div class="fg mb10"><label class="fl">Protocol</label><input class="fc" id="la-pt" placeholder="e.g. Uniswap v3, Raydium, Curve"></div>
+    <div class="fg mb10"><label class="fl">Asset 1 ticker</label><input class="fc" id="la-a1" placeholder="e.g. BTC"></div>
+    <div class="fg mb10"><label class="fl">Asset 1 price at entry ($)</label><input class="fc" id="la-p1" type="number" step="any" placeholder="e.g. 84000"></div>
+    <div class="fg mb10"><label class="fl">Asset 2 ticker</label><input class="fc" id="la-a2" placeholder="e.g. ETH (use USDC/USDT for stable pairs)"></div>
+    <div class="fg mb10"><label class="fl">Asset 2 price at entry ($)</label><input class="fc" id="la-p2" type="number" step="any" placeholder="e.g. 2300 (or 1 for stablecoins)"></div>
+    <div class="fg mb10"><label class="fl">Initial deposit ($)</label><input class="fc" id="la-iv" type="number" step="any" placeholder="Total USD value deposited"></div>
+    <div class="fg mb10"><label class="fl">APR %</label><input class="fc" id="la-ap" type="number" step="any" placeholder="e.g. 25"></div>
+    <div class="fg mb10"><label class="fl">Extra fees earned ($) <span class="txm">optional</span></label><input class="fc" id="la-fe" type="number" step="any" placeholder="0"></div>
+    <div class="fg mb10"><label class="fl">Start Date</label><input class="fc" id="la-dt" type="date"></div>
+    <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveAddLP()">Add</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
+  document.getElementById('la-dt').value=new Date().toISOString().slice(0,10);
+}
+function saveAddLP(){
+  const pr=document.getElementById('la-pr').value.trim().toUpperCase();
+  const pt=document.getElementById('la-pt').value.trim();
+  const a1=document.getElementById('la-a1').value.trim().toUpperCase();
+  const p1=parseFloat(document.getElementById('la-p1').value);
+  const a2=document.getElementById('la-a2').value.trim().toUpperCase();
+  const p2=parseFloat(document.getElementById('la-p2').value);
+  const iv=parseFloat(document.getElementById('la-iv').value);
+  const ap=parseFloat(document.getElementById('la-ap').value);
+  const fe=parseFloat(document.getElementById('la-fe').value)||0;
+  const dt=document.getElementById('la-dt').value;
+  if(!pr||!pt||!a1||isNaN(p1)||!a2||isNaN(p2)||isNaN(iv)||isNaN(ap)){toast('Fill all required fields','twarn');return;}
+  DB.lp.push({id:uid(),pair:pr,protocol:pt,asset1:a1,initPrice1:p1,asset2:a2,initPrice2:p2,initValue:iv,apr:ap,feesEarned:fe,startDate:new Date(dt).getTime()});
+  save();rYield();closeMod();toast('✅ LP position added');
+}
+function editLP(id){
+  const p=DB.lp.find(x=>x.id===id);if(!p)return;
+  showMod(`<div class="mttl">Edit: ${p.pair}</div>
+    <div class="fg mb10"><label class="fl">Protocol</label><input class="fc" id="le-pt" value="${p.protocol}"></div>
+    <div class="fg mb10"><label class="fl">APR %</label><input class="fc" id="le-ap" type="number" step="any" value="${p.apr}"></div>
+    <div class="fg mb10"><label class="fl">Extra fees earned ($)</label><input class="fc" id="le-fe" type="number" step="any" value="${p.feesEarned||0}"></div>
+    <div class="fg mb10"><label class="fl">Asset 1 entry price</label><input class="fc" id="le-p1" type="number" step="any" value="${p.initPrice1}"></div>
+    <div class="fg mb10"><label class="fl">Asset 2 entry price</label><input class="fc" id="le-p2" type="number" step="any" value="${p.initPrice2}"></div>
+    <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveEditLP('${id}')">Save</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
+}
+function saveEditLP(id){
+  const p=DB.lp.find(x=>x.id===id);if(!p)return;
+  p.protocol=document.getElementById('le-pt').value.trim();
+  p.apr=parseFloat(document.getElementById('le-ap').value);
+  p.feesEarned=parseFloat(document.getElementById('le-fe').value)||0;
+  p.initPrice1=parseFloat(document.getElementById('le-p1').value);
+  p.initPrice2=parseFloat(document.getElementById('le-p2').value);
+  save();rYield();closeMod();toast('✅ Updated');
+}
+function delLP(id){if(!confirm('Remove LP position?'))return;DB.lp=DB.lp.filter(x=>x.id!==id);save();rYield();toast('Removed');}
+
+// ═══════════════════════════════
+// DCA LOG
+// ═══════════════════════════════
+function rDCA(){
+  const el=document.getElementById('dca-list');
+  const sm=document.getElementById('dca-summary');
+  if(!el||!sm)return;
+  const btcPrice=yPrice('BTC')||window._priceCache?.['BTC']||0;
+  if(!DB.dcaLog.length){
+    sm.innerHTML='';
+    el.innerHTML='<div class="yempty">No DCA buys yet. Click + Add Buy to log your first purchase.</div>';
+    return;
+  }
+  // Sort by date ascending
+  const sorted=[...DB.dcaLog].sort((a,b)=>a.date-b.date);
+  let totalBTC=0,totalSpent=0;
+  sorted.forEach(b=>{totalBTC+=b.amount;totalSpent+=b.cost;});
+  const avgPrice=totalBTC>0?totalSpent/totalBTC:0;
+  const curVal=btcPrice?totalBTC*btcPrice:0;
+  const pnlUSD=btcPrice?curVal-totalSpent:0;
+  const pnlPct=totalSpent>0?pnlUSD/totalSpent*100:0;
+  const pnlColor=pnlUSD>=0?'var(--gr)':'var(--rd)';
+  sm.innerHTML=`
+    <div class="dca-stat"><div class="dca-stat-lbl">Total BTC</div><div class="dca-stat-val">₿${totalBTC.toFixed(6)}</div></div>
+    <div class="dca-stat"><div class="dca-stat-lbl">Avg Price</div><div class="dca-stat-val">${avgPrice>0?fmtV(avgPrice):'—'}</div></div>
+    <div class="dca-stat"><div class="dca-stat-lbl">Total Spent</div><div class="dca-stat-val">${fmtV(totalSpent)}</div></div>
+    <div class="dca-stat"><div class="dca-stat-lbl">P&amp;L</div><div class="dca-stat-val" style="color:${pnlColor}">${btcPrice?fmtM(pnlUSD)+' ('+fmtPct(pnlPct)+')':'—'}</div></div>`;
+  let rows='';
+  sorted.forEach(b=>{
+    const bPnlUSD=btcPrice?(b.amount*btcPrice)-b.cost:null;
+    const bPnlPct=bPnlUSD!=null?bPnlUSD/b.cost*100:null;
+    const d=new Date(b.date);
+    rows+=`<tr>
+      <td>${d.toLocaleDateString('en-GB')}</td>
+      <td>${fmtV(b.price)}</td>
+      <td>₿${b.amount.toFixed(6)}</td>
+      <td>${fmtV(b.cost)}</td>
+      <td style="color:${bPnlUSD!=null&&bPnlUSD>=0?'var(--gr)':'var(--rd)'}">${bPnlUSD!=null?fmtM(bPnlUSD)+' ('+fmtPct(bPnlPct)+')':'—'}</td>
+      <td><span class="txm txs">${b.note||'—'}</span></td>
+      <td><button class="btn bsm" onclick="delDCA('${b.id}')" style="color:var(--rd)">✕</button></td>
+    </tr>`;
+  });
+  el.innerHTML=`<table class="yield-table"><thead><tr><th>Date</th><th>Price</th><th>BTC</th><th>Cost</th><th>P&amp;L</th><th>Note</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function showAddDCA(){
+  showMod(`<div class="mttl">Log BTC Buy</div>
+    <div class="fg mb10"><label class="fl">Date</label><input class="fc" id="da-dt" type="date"></div>
+    <div class="fg mb10"><label class="fl">BTC Price at Buy ($)</label><input class="fc" id="da-pr" type="number" step="any" placeholder="e.g. 84000"></div>
+    <div class="fg mb10"><label class="fl">Amount Spent ($)</label><input class="fc" id="da-cs" type="number" step="any" placeholder="e.g. 500"></div>
+    <div class="fg mb10"><label class="fl">Note <span class="txm">optional</span></label><input class="fc" id="da-nt" placeholder="e.g. Weekly DCA"></div>
+    <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveAddDCA()">Add</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
+  document.getElementById('da-dt').value=new Date().toISOString().slice(0,10);
+}
+function saveAddDCA(){
+  const dt=document.getElementById('da-dt').value;
+  const pr=parseFloat(document.getElementById('da-pr').value);
+  const cs=parseFloat(document.getElementById('da-cs').value);
+  const nt=document.getElementById('da-nt').value.trim();
+  if(!dt||isNaN(pr)||pr<=0||isNaN(cs)||cs<=0){toast('Fill all required fields','twarn');return;}
+  const amount=cs/pr;
+  DB.dcaLog.push({id:uid(),date:new Date(dt).getTime(),price:pr,cost:cs,amount,note:nt});
+  save();rDCA();closeMod();toast('✅ BTC buy logged');
+}
+function delDCA(id){if(!confirm('Remove this DCA entry?'))return;DB.dcaLog=DB.dcaLog.filter(x=>x.id!==id);save();rDCA();toast('Removed');}
+
+// ═══════════════════════════════
+// SAYLOR LEVERAGED CYCLE TRADE
+// ═══════════════════════════════
+function rSaylor(){
+  const el=document.getElementById('saylor-panel');if(!el)return;
+  const s=DB.saylor;
+  if(!s.entryPrice||s.entryPrice<=0){
+    el.innerHTML=`<div class="yempty">No active trade. Click ⚙️ Setup to configure your Saylor leveraged position.</div>`;return;
+  }
+  const btcPrice=yPrice('BTC')||window._priceCache?.['BTC']||s.currentPrice||0;
+  const totalItems=Math.floor(s.capital/s.itemSize);
+  const itemsDeployed=s.log.reduce((a,e)=>a+(e.items||0),0);
+  const itemsRemaining=Math.max(0,totalItems-itemsDeployed);
+  const capitalDeployed=itemsDeployed*s.itemSize;
+  // Leveraged P&L
+  const pnlPct=btcPrice&&s.entryPrice?((btcPrice-s.entryPrice)/s.entryPrice)*100*s.leverage:0;
+  const pnlUSD=capitalDeployed*pnlPct/100;
+  // Determine tier
+  let tierName='',tierClass='saylor-profit',dailyItems=1,tierMsg='';
+  if(pnlPct>=-1){tierName='✅ In Profit / Neutral';tierClass='saylor-profit';dailyItems=itemsDeployed>0?1:2;tierMsg='Steady: 1 item/day (2 on entry day)';}
+  else if(pnlPct>=-5){tierName='⚠️ -1% to -5%';tierClass='saylor-warn';dailyItems=2;tierMsg='DCA-down: 2 items/day';}
+  else if(pnlPct>=-10){tierName='🟠 -5% to -10%';tierClass='saylor-risk';dailyItems=3;tierMsg='DCA-down: 3 items/day';}
+  else if(pnlPct>=-15){tierName='🔴 -10% to -15%';tierClass='saylor-danger';dailyItems=4;tierMsg='DCA-down: 4 items/day';}
+  else if(pnlPct>=-20){tierName='🔴 -15% to -20%';tierClass='saylor-danger';dailyItems=5;tierMsg='DCA-down: 5 items/day';}
+  else{tierName='🚨 -20%+ CRITICAL';tierClass='saylor-danger';dailyItems=6;tierMsg='3 items to trade + 3 items extra margin!';}
+  // Take profit targets
+  const tp15=s.entryPrice*(1+15/100/s.leverage);
+  const tp20=s.entryPrice*(1+20/100/s.leverage);
+  const daysSince=s.startDate?Math.floor((Date.now()-s.startDate)/86400000):0;
+  // Log table
+  let logRows='';
+  if(s.log.length){
+    [...s.log].sort((a,b)=>b.date-a.date).forEach(e=>{
+      logRows+=`<tr><td>${new Date(e.date).toLocaleDateString('en-GB')}</td><td>${e.items}</td><td>${fmtV(e.items*s.itemSize)}</td><td><span class="txm txs">${e.note||'—'}</span></td><td><button class="btn bsm" onclick="delSaylorLog('${e.id}')" style="color:var(--rd)">✕</button></td></tr>`;
+    });
+  }
+  el.innerHTML=`
+    <div class="saylor-status ${tierClass}">
+      <div style="font-size:11px;font-weight:600;color:var(--mu);margin-bottom:4px">${tierName}</div>
+      <div class="saylor-rule">${tierMsg}</div>
+      <div style="font-size:11px;color:var(--mu);margin-top:6px">
+        Entry: ${fmtV(s.entryPrice)} · BTC now: ${btcPrice?fmtV(btcPrice):'—'} · Leveraged P&L: <span style="color:${pnlPct>=0?'var(--gr)':'var(--rd)'}">${fmtPct(pnlPct)} (${fmtM(pnlUSD)})</span>
+      </div>
+    </div>
+    <div class="saylor-grid">
+      <div class="dca-stat"><div class="dca-stat-lbl">Capital</div><div class="dca-stat-val">${fmtV(s.capital)}</div></div>
+      <div class="dca-stat"><div class="dca-stat-lbl">Items Total / Used</div><div class="dca-stat-val">${totalItems} / ${itemsDeployed}</div></div>
+      <div class="dca-stat"><div class="dca-stat-lbl">Deployed</div><div class="dca-stat-val">${fmtV(capitalDeployed)}</div></div>
+      <div class="dca-stat"><div class="dca-stat-lbl">Days Active</div><div class="dca-stat-val">${daysSince}d</div></div>
+    </div>
+    <div class="saylor-tiers">
+      <div class="saylor-tier${pnlPct>=-1?' active':''}"><strong>Profit / 0%</strong><br>2 items on entry, 1/day</div>
+      <div class="saylor-tier${pnlPct<-1&&pnlPct>=-5?' active':''}"><strong>-1% to -5%</strong><br>2 items/day</div>
+      <div class="saylor-tier${pnlPct<-5&&pnlPct>=-10?' active':''}"><strong>-5% to -10%</strong><br>3 items/day</div>
+      <div class="saylor-tier${pnlPct<-10&&pnlPct>=-15?' active':''}"><strong>-10% to -15%</strong><br>4 items/day</div>
+      <div class="saylor-tier${pnlPct<-15&&pnlPct>=-20?' active':''}"><strong>-15% to -20%</strong><br>5 items/day</div>
+      <div class="saylor-tier${pnlPct<-20?' active':''}"><strong>-20%+ CRITICAL</strong><br>3 trade + 3 margin</div>
+    </div>
+    <div style="margin-top:14px;padding:10px;background:var(--bg3);border-radius:8px;font-size:11px;color:var(--mu)">
+      🎯 Take Profit: <strong>15%</strong> → BTC ${fmtV(tp15)} &nbsp;|&nbsp; <strong>20%</strong> → BTC ${fmtV(tp20)}
+    </div>
+    <div style="margin-top:14px">
+      <div class="hdb" style="margin-bottom:8px">
+        <div style="font-size:12px;font-weight:600;color:var(--mu)">Trade Log</div>
+        <button class="btn bsm bg" onclick="showAddSaylorLog()">+ Add Entry</button>
+      </div>
+      ${s.log.length?`<table class="yield-table"><thead><tr><th>Date</th><th>Items</th><th>Value</th><th>Note</th><th></th></tr></thead><tbody>${logRows}</tbody></table>`:'<div class="yempty" style="font-size:11px">No entries yet.</div>'}
+    </div>`;
+}
+function showSaylorSetup(){
+  const s=DB.saylor;
+  showMod(`<div class="mttl">⚡ Saylor Trade Setup</div>
+    <div class="fg mb10"><label class="fl">Total Capital ($)</label><input class="fc" id="ss-cap" type="number" step="any" value="${s.capital||3000}" placeholder="e.g. 3000"></div>
+    <div class="fg mb10"><label class="fl">Item Size ($)</label><input class="fc" id="ss-sz" type="number" step="any" value="${s.itemSize||100}" placeholder="e.g. 100"></div>
+    <div class="fg mb10"><label class="fl">Leverage (x)</label><input class="fc" id="ss-lev" type="number" step="1" value="${s.leverage||10}" placeholder="e.g. 10"></div>
+    <div class="fg mb10"><label class="fl">BTC Entry Price ($)</label><input class="fc" id="ss-ep" type="number" step="any" value="${s.entryPrice||''}" placeholder="e.g. 84000"></div>
+    <div class="fg mb10"><label class="fl">Trade Start Date</label><input class="fc" id="ss-dt" type="date" value="${s.startDate?new Date(s.startDate).toISOString().slice(0,10):new Date().toISOString().slice(0,10)}"></div>
+    <div style="font-size:11px;color:var(--mu);margin-bottom:10px">Capital ÷ item size = number of items. e.g. $3000 ÷ $100 = 30 items</div>
+    <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveSaylorSetup()">Save</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
+}
+function saveSaylorSetup(){
+  const cap=parseFloat(document.getElementById('ss-cap').value);
+  const sz=parseFloat(document.getElementById('ss-sz').value);
+  const lev=parseFloat(document.getElementById('ss-lev').value);
+  const ep=parseFloat(document.getElementById('ss-ep').value);
+  const dt=document.getElementById('ss-dt').value;
+  if(isNaN(cap)||cap<=0||isNaN(sz)||sz<=0||isNaN(lev)||lev<=0||isNaN(ep)||ep<=0){toast('Fill all fields with valid numbers','twarn');return;}
+  DB.saylor.capital=cap;DB.saylor.itemSize=sz;DB.saylor.leverage=lev;
+  DB.saylor.entryPrice=ep;DB.saylor.startDate=new Date(dt).getTime();
+  save();rSaylor();closeMod();toast('✅ Saylor setup saved');
+}
+function showAddSaylorLog(){
+  showMod(`<div class="mttl">Log Trade Entry</div>
+    <div class="fg mb10"><label class="fl">Date</label><input class="fc" id="sl-dt" type="date"></div>
+    <div class="fg mb10"><label class="fl">Items Deployed</label><input class="fc" id="sl-it" type="number" step="1" min="1" placeholder="e.g. 2"></div>
+    <div class="fg mb10"><label class="fl">Note <span class="txm">optional</span></label><input class="fc" id="sl-nt" placeholder="e.g. Entry day, -5% DCA"></div>
+    <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveAddSaylorLog()">Add</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
+  document.getElementById('sl-dt').value=new Date().toISOString().slice(0,10);
+}
+function saveAddSaylorLog(){
+  const dt=document.getElementById('sl-dt').value;
+  const it=parseInt(document.getElementById('sl-it').value);
+  const nt=document.getElementById('sl-nt').value.trim();
+  if(!dt||isNaN(it)||it<=0){toast('Fill all required fields','twarn');return;}
+  DB.saylor.log.push({id:uid(),date:new Date(dt).getTime(),items:it,note:nt});
+  save();rSaylor();closeMod();toast('✅ Entry logged');
+}
+function delSaylorLog(id){if(!confirm('Remove this log entry?'))return;DB.saylor.log=DB.saylor.log.filter(x=>x.id!==id);save();rSaylor();toast('Removed');}
+
 async function refreshAll(force=false){
   document.getElementById('upd').textContent='⟳ Refreshing…';
   await Promise.allSettled([refreshCrypto(),fetchLive(),fetchBTCMAs()]);
   await refreshStocks(force); // force=true skips the 5-min cooldown
   await fetchIndicators();    // auto-fill DXY, Weekly RSI, Funding Rate, Dominance
+  rYield();                   // refresh yield calculations with updated prices
   chkAlerts();
   document.getElementById('upd').textContent='Updated: '+new Date().toLocaleTimeString();
 }
@@ -1680,8 +2147,8 @@ function saveSettings(){
 }
 function reqNotif(){Notification.requestPermission().then(p=>{document.getElementById('nst').textContent='Status: '+p;toast(p==='granted'?'✅ Notifications enabled':'⚠️ Not permitted','twarn');});}
 function expData(){const j=JSON.stringify(DB,null,2);const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([j],{type:'application/json'}));a.download='portfolio_'+Date.now()+'.json';a.click();}
-function impData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.positions)DB.positions=d.positions;if(d.alerts)DB.alerts=d.alerts;if(d.cash!==undefined)DB.cash=d.cash;if(d.etfCash!==undefined)DB.etfCash=d.etfCash;if(d.indicators)DB.indicators=d.indicators;if(d.settings)DB.settings=d.settings;save();initAll();toast('✅ Portfolio imported');}catch(e){toast('❌ Invalid file','twarn');}};r.readAsText(f);}
-function clrAll(){if(!confirm('Clear ALL data?'))return;DB={positions:[],alerts:[],cash:0,etfCash:0,indicators:{macro:[...DEF.macro.map(x=>({...x,links:[...(x.links||[])]}))],onchain:[...DEF.onchain.map(x=>({...x,links:[...(x.links||[])]}))],sentiment:[...DEF.sentiment.map(x=>({...x,links:[...(x.links||[])]}))],technical:[...DEF.technical.map(x=>({...x,links:[...(x.links||[])]}))],},settings:{tdKey:'',fmpKey:'',avKey:'',ri:60}};save();initAll();toast('Data cleared');}
+function impData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.positions)DB.positions=d.positions;if(d.alerts)DB.alerts=d.alerts;if(d.cash!==undefined)DB.cash=d.cash;if(d.etfCash!==undefined)DB.etfCash=d.etfCash;if(d.indicators)DB.indicators=d.indicators;if(d.settings)DB.settings=d.settings;if(d.staking)DB.staking=d.staking;if(d.lp)DB.lp=d.lp;if(d.dcaLog)DB.dcaLog=d.dcaLog;if(d.saylor)DB.saylor={...DB.saylor,...d.saylor};save();initAll();toast('✅ Portfolio imported');}catch(e){toast('❌ Invalid file','twarn');}};r.readAsText(f);}
+function clrAll(){if(!confirm('Clear ALL data?'))return;DB={positions:[],alerts:[],cash:0,etfCash:0,staking:[],lp:[],dcaLog:[],saylor:{capital:3000,itemSize:100,leverage:10,entryPrice:0,startDate:null,currentPrice:0,log:[]},indicators:{macro:[...DEF.macro.map(x=>({...x,links:[...(x.links||[])]}))],onchain:[...DEF.onchain.map(x=>({...x,links:[...(x.links||[])]}))],sentiment:[...DEF.sentiment.map(x=>({...x,links:[...(x.links||[])]}))],technical:[...DEF.technical.map(x=>({...x,links:[...(x.links||[])]}))],},settings:{tdKey:'',fmpKey:'',avKey:'',ri:60}};save();initAll();toast('Data cleared');}
 
 // ═══════════════════════════════
 // AUTO REFRESH + INIT
@@ -1712,7 +2179,7 @@ function initAll(){
       if(!hasAlert)syncTargetAlert(p);
     }
   });
-  rPos();rAlerts();rInd();rHdr();rPie();
+  rPos();rAlerts();rInd();rHdr();rPie();rYield();
   document.getElementById('tdk').value=DB.settings.tdKey||'';
   document.getElementById('fmpk').value=DB.settings.fmpKey||'';
   document.getElementById('avk').value=DB.settings.avKey||'';
