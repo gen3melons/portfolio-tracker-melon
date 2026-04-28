@@ -273,6 +273,17 @@ tr.row-near td{background:rgba(234,179,8,.05)!important}
 .saylor-tier.active{border-color:var(--bl);background:rgba(59,130,246,.08);font-weight:700}
 .saylor-log-row td{padding:5px 8px;border-bottom:1px solid var(--bdr2);font-size:12px}
 @media(max-width:700px){.saylor-grid{grid-template-columns:1fr 1fr}.saylor-tiers{grid-template-columns:1fr}}
+/* ── Lending ── */
+.ltv-bar-wrap{height:6px;border-radius:3px;background:var(--bdr2);margin-top:5px;overflow:hidden}
+.ltv-bar{height:100%;border-radius:3px;transition:width .4s}
+.ltv-safe{background:var(--gr)}.ltv-warn{background:var(--yw)}.ltv-risk{background:var(--or)}.ltv-danger{background:var(--rd)}
+.lend-health{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block}
+.lend-safe{background:var(--grd);color:var(--gr)}.lend-warn{background:rgba(234,179,8,.1);color:var(--yw)}
+.lend-risk{background:rgba(249,115,22,.1);color:var(--or)}.lend-danger{background:var(--rdd);color:var(--rd)}
+.lend-card{background:var(--bg2);border:1px solid var(--bdr2);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.lend-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.lend-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+@media(max-width:700px){.lend-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -531,6 +542,17 @@ tr.row-near td{background:rgba(234,179,8,.05)!important}
     <div id="lp-list"></div>
   </div>
 
+  <!-- LENDING / COLLATERAL LOANS -->
+  <div class="yield-section" style="margin-top:20px">
+    <div class="hdb" style="margin-bottom:4px">
+      <div class="ct">🏦 BTC Collateral Loans</div>
+      <button class="btn bsm bg" onclick="showAddLending()">+ Add Loan</button>
+    </div>
+    <div style="font-size:11px;color:var(--mu);margin-bottom:12px">Deposit BTC → borrow USDC → buy more BTC · Nexo, Xapo, etc.</div>
+    <div id="lend-summary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px"></div>
+    <div id="lend-list"></div>
+  </div>
+
 </div>
 
 <!-- ═══ SETTINGS ═══ -->
@@ -667,7 +689,7 @@ const DEF={
 // ═══════════════════════════════
 // DB
 // ═══════════════════════════════
-let DB={positions:[],alerts:[],cash:0,etfCash:0,staking:[],lp:[],dcaLog:[],saylor:{capital:3000,itemSize:100,leverage:10,entryPrice:0,startDate:null,currentPrice:0,log:[]},indicators:{macro:[...DEF.macro.map(x=>({...x,links:[...(x.links||[])]}))],onchain:[...DEF.onchain.map(x=>({...x,links:[...(x.links||[])]}))],sentiment:[...DEF.sentiment.map(x=>({...x,links:[...(x.links||[])]}))],technical:[...DEF.technical.map(x=>({...x,links:[...(x.links||[])]}))],},settings:{tdKey:'',fmpKey:'',avKey:'',ri:60}};
+let DB={positions:[],alerts:[],cash:0,etfCash:0,staking:[],lp:[],lending:[],dcaLog:[],saylor:{capital:3000,itemSize:100,leverage:10,entryPrice:0,startDate:null,currentPrice:0,log:[]},indicators:{macro:[...DEF.macro.map(x=>({...x,links:[...(x.links||[])]}))],onchain:[...DEF.onchain.map(x=>({...x,links:[...(x.links||[])]}))],sentiment:[...DEF.sentiment.map(x=>({...x,links:[...(x.links||[])]}))],technical:[...DEF.technical.map(x=>({...x,links:[...(x.links||[])]}))],},settings:{tdKey:'',fmpKey:'',avKey:'',ri:60}};
 let timer=null;
 
 function save(){try{localStorage.setItem('ptv4',JSON.stringify(DB));}catch(e){}}
@@ -682,6 +704,7 @@ function load(){
       DB.etfCash=d.etfCash||0;
       DB.staking=d.staking||[];
       DB.lp=d.lp||[];
+      DB.lending=d.lending||[];
       DB.dcaLog=d.dcaLog||[];
       if(d.saylor)DB.saylor={...DB.saylor,...d.saylor};
       DB.settings={...DB.settings,...(d.settings||{})};
@@ -1843,8 +1866,8 @@ function rYield(){
     lpEl.innerHTML=`<table class="yield-table"><thead><tr><th>Pair / Protocol</th><th>Deposited</th><th>APR</th><th>Age</th><th>Fees Earned</th><th>Imp. Loss</th><th>Est. Value</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
-  // ── DCA & Saylor ──
-  rDCA();rSaylor();
+  // ── Lending, DCA & Saylor ──
+  rLending();rDCA();rSaylor();
 
   // ── Summary bar ──
   const total=totalStaked+totalLP;
@@ -1950,6 +1973,164 @@ function saveEditLP(id){
   save();rYield();closeMod();toast('✅ Updated');
 }
 function delLP(id){if(!confirm('Remove LP position?'))return;DB.lp=DB.lp.filter(x=>x.id!==id);save();rYield();toast('Removed');}
+
+// ═══════════════════════════════
+// LENDING (BTC Collateral Loans)
+// ═══════════════════════════════
+function rLending(){
+  const smEl=document.getElementById('lend-summary');
+  const lstEl=document.getElementById('lend-list');
+  if(!smEl||!lstEl)return;
+  const btcPrice=yPrice('BTC')||window._priceCache?.['BTC']||0;
+  const now=Date.now();
+
+  if(!DB.lending.length){
+    smEl.innerHTML='';
+    lstEl.innerHTML='<div class="yempty">No loans yet. Click + Add Loan to track your first BTC-collateral position.</div>';
+    return;
+  }
+
+  let totalCollateralUSD=0,totalDebt=0,totalInterest=0,totalExposureUSD=0;
+
+  const cards=DB.lending.map(l=>{
+    const days=(now-l.startDate)/86400000;
+    const curCollateralUSD=l.collateralBTC*(btcPrice||l.collateralEntryPrice);
+    const ltv=curCollateralUSD>0?l.loanAmount/curCollateralUSD*100:0;
+    const liqPrice=l.collateralBTC>0?l.loanAmount/(l.collateralBTC*(l.maxLTV/100)):0;
+    const safetyMargin=btcPrice&&liqPrice>0?(btcPrice-liqPrice)/btcPrice*100:null;
+    const interestAccrued=l.loanAmount*(l.loanAPR/100)*days/365;
+    const collYield=l.collateralAPR>0?l.collateralBTC*(btcPrice||l.collateralEntryPrice)*(l.collateralAPR/100)*days/365:0;
+    const btcBoughtCurVal=l.btcBought*(btcPrice||l.btcBuyPrice);
+    const totalBTCHeld=l.collateralBTC+l.btcBought;
+    const totalBTCVal=totalBTCHeld*(btcPrice||l.collateralEntryPrice);
+    const netEquity=totalBTCVal-l.loanAmount-interestAccrued+collYield;
+    const costBasis=l.collateralBTC*l.collateralEntryPrice+l.btcBought*l.btcBuyPrice;
+    const netPnL=netEquity-costBasis+l.loanAmount; // what you put in was collateral cost basis
+    const netPnLPct=costBasis>0?netPnL/costBasis*100:0;
+
+    totalCollateralUSD+=curCollateralUSD;
+    totalDebt+=l.loanAmount;
+    totalInterest+=interestAccrued;
+    totalExposureUSD+=totalBTCVal;
+
+    // LTV health
+    let ltvClass,ltvLabel,barClass;
+    if(ltv<50){ltvClass='lend-safe';ltvLabel='SAFE';barClass='ltv-safe';}
+    else if(ltv<65){ltvClass='lend-warn';ltvLabel='CAUTION';barClass='ltv-warn';}
+    else if(ltv<75){ltvClass='lend-risk';ltvLabel='WARNING';barClass='ltv-risk';}
+    else{ltvClass='lend-danger';ltvLabel='DANGER';barClass='ltv-danger';}
+
+    const pnlColor=netPnL>=0?'var(--gr)':'var(--rd)';
+
+    return `<div class="lend-card">
+      <div class="lend-card-header">
+        <div>
+          <div style="font-size:14px;font-weight:700">${l.platform}</div>
+          <div style="font-size:11px;color:var(--mu);margin-top:2px">
+            Collateral: <strong>₿${l.collateralBTC}</strong> · Loan: <strong>${fmtV(l.loanAmount)} USDC</strong> · ${Math.floor(days)}d active
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="lend-health ${ltvClass}">${ltvLabel}</span>
+          <button class="btn bsm" onclick="editLending('${l.id}')">✏️</button>
+          <button class="btn bsm" onclick="delLending('${l.id}')" style="color:var(--rd)">✕</button>
+        </div>
+      </div>
+      <!-- LTV bar -->
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mu)">
+        <span>LTV</span>
+        <span style="font-weight:700;color:${ltv>=75?'var(--rd)':ltv>=65?'var(--or)':ltv>=50?'var(--yw)':'var(--gr)'}">${ltv.toFixed(1)}% / ${l.maxLTV}% max</span>
+      </div>
+      <div class="ltv-bar-wrap"><div class="ltv-bar ${barClass}" style="width:${Math.min(ltv/l.maxLTV*100,100).toFixed(1)}%"></div></div>
+      <div style="font-size:10px;color:var(--mu);margin-top:4px">
+        Liquidation: <strong style="color:${liqPrice>0&&btcPrice&&btcPrice<liqPrice*1.2?'var(--rd)':'inherit'}">${liqPrice>0?fmtV(liqPrice):'—'}</strong>
+        ${safetyMargin!=null?' · Safety margin: <strong style="color:'+(safetyMargin<15?'var(--rd)':safetyMargin<30?'var(--yw)':'var(--gr)')+'">'+safetyMargin.toFixed(1)+'%</strong>':''}
+      </div>
+      <div class="lend-grid">
+        <div class="dca-stat"><div class="dca-stat-lbl">Collateral Value</div><div class="dca-stat-val">${btcPrice?fmtV(curCollateralUSD):'—'}</div></div>
+        <div class="dca-stat"><div class="dca-stat-lbl">Total BTC Held</div><div class="dca-stat-val">₿${totalBTCHeld.toFixed(6)}</div></div>
+        <div class="dca-stat"><div class="dca-stat-lbl">BTC Bought</div><div class="dca-stat-val">₿${l.btcBought.toFixed(6)}<br><span style="font-size:10px;color:var(--mu)">${btcPrice?fmtV(btcBoughtCurVal):'—'}</span></div></div>
+        <div class="dca-stat"><div class="dca-stat-lbl">Net P&amp;L</div><div class="dca-stat-val" style="color:${pnlColor}">${btcPrice?fmtM(netPnL)+' ('+fmtPct(netPnLPct)+')':'—'}</div></div>
+        <div class="dca-stat"><div class="dca-stat-lbl">Interest Accrued</div><div class="dca-stat-val" style="color:var(--rd)">-${fmtV(interestAccrued)}</div></div>
+        ${l.collateralAPR>0?`<div class="dca-stat"><div class="dca-stat-lbl">Collateral Yield</div><div class="dca-stat-val" style="color:var(--gr)">+${fmtV(collYield)}</div></div>`:''}
+        <div class="dca-stat"><div class="dca-stat-lbl">Net Equity</div><div class="dca-stat-val" style="color:${netEquity>=0?'var(--gr)':'var(--rd)'}">${btcPrice?fmtV(netEquity):'—'}</div></div>
+      </div>
+      ${l.notes?`<div style="font-size:11px;color:var(--mu);margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr2)">${l.notes}</div>`:''}
+    </div>`;
+  }).join('');
+
+  lstEl.innerHTML=cards;
+
+  const netEquityTotal=totalExposureUSD-totalDebt;
+  smEl.innerHTML=`
+    <div class="dca-stat"><div class="dca-stat-lbl">Total Collateral</div><div class="dca-stat-val">${btcPrice?fmtV(totalCollateralUSD):'—'}</div></div>
+    <div class="dca-stat"><div class="dca-stat-lbl">Total Debt</div><div class="dca-stat-val" style="color:var(--rd)">-${fmtV(totalDebt)}</div></div>
+    <div class="dca-stat"><div class="dca-stat-lbl">Interest Accrued</div><div class="dca-stat-val" style="color:var(--rd)">-${fmtV(totalInterest)}</div></div>
+    <div class="dca-stat"><div class="dca-stat-lbl">Net Equity</div><div class="dca-stat-val" style="color:${netEquityTotal>=0?'var(--gr)':'var(--rd)'}">${btcPrice?fmtV(netEquityTotal):'—'}</div></div>`;
+}
+
+function showAddLending(){
+  showMod(`<div class="mttl">🏦 Add BTC Collateral Loan</div>
+    <div class="fg mb10"><label class="fl">Platform</label><input class="fc" id="la2-pl" placeholder="e.g. Nexo, Xapo, Ledn"></div>
+    <div class="fg mb10"><label class="fl">BTC Deposited as Collateral</label><input class="fc" id="la2-cb" type="number" step="any" placeholder="e.g. 0.5"></div>
+    <div class="fg mb10"><label class="fl">BTC Price at Deposit ($)</label><input class="fc" id="la2-ep" type="number" step="any" placeholder="e.g. 84000"></div>
+    <div class="fg mb10"><label class="fl">Loan Amount (USDC/USD borrowed)</label><input class="fc" id="la2-ln" type="number" step="any" placeholder="e.g. 20000"></div>
+    <div class="fg mb10"><label class="fl">Loan APR % (interest paid)</label><input class="fc" id="la2-apr" type="number" step="any" placeholder="e.g. 9.9"></div>
+    <div class="fg mb10"><label class="fl">Collateral APR % (yield earned on BTC) <span class="txm">optional</span></label><input class="fc" id="la2-capr" type="number" step="any" placeholder="e.g. 2"></div>
+    <div class="fg mb10"><label class="fl">Max LTV % before liquidation</label><input class="fc" id="la2-ltv" type="number" step="any" value="80" placeholder="e.g. 80"></div>
+    <div class="fg mb10"><label class="fl">BTC Bought with Loan (amount)</label><input class="fc" id="la2-bb" type="number" step="any" placeholder="e.g. 0.23 (0 if not yet bought)"></div>
+    <div class="fg mb10"><label class="fl">BTC Buy Price ($) <span class="txm">if bought</span></label><input class="fc" id="la2-bp" type="number" step="any" placeholder="e.g. 86000"></div>
+    <div class="fg mb10"><label class="fl">Start Date</label><input class="fc" id="la2-dt" type="date"></div>
+    <div class="fg mb10"><label class="fl">Notes <span class="txm">optional</span></label><input class="fc" id="la2-nt" placeholder="e.g. Strategy rationale"></div>
+    <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveAddLending()">Add</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
+  document.getElementById('la2-dt').value=new Date().toISOString().slice(0,10);
+}
+function saveAddLending(){
+  const pl=document.getElementById('la2-pl').value.trim();
+  const cb=parseFloat(document.getElementById('la2-cb').value);
+  const ep=parseFloat(document.getElementById('la2-ep').value);
+  const ln=parseFloat(document.getElementById('la2-ln').value);
+  const apr=parseFloat(document.getElementById('la2-apr').value);
+  const capr=parseFloat(document.getElementById('la2-capr').value)||0;
+  const maxLtv=parseFloat(document.getElementById('la2-ltv').value)||80;
+  const bb=parseFloat(document.getElementById('la2-bb').value)||0;
+  const bp=parseFloat(document.getElementById('la2-bp').value)||0;
+  const dt=document.getElementById('la2-dt').value;
+  const nt=document.getElementById('la2-nt').value.trim();
+  if(!pl||isNaN(cb)||cb<=0||isNaN(ep)||ep<=0||isNaN(ln)||ln<=0||isNaN(apr)){toast('Fill all required fields','twarn');return;}
+  DB.lending.push({id:uid(),platform:pl,collateralBTC:cb,collateralEntryPrice:ep,loanAmount:ln,loanAPR:apr,collateralAPR:capr,maxLTV:maxLtv,btcBought:bb,btcBuyPrice:bp,startDate:new Date(dt).getTime(),notes:nt});
+  save();rLending();closeMod();toast('✅ Loan position added');
+}
+function editLending(id){
+  const l=DB.lending.find(x=>x.id===id);if(!l)return;
+  showMod(`<div class="mttl">Edit: ${l.platform}</div>
+    <div class="fg mb10"><label class="fl">Platform</label><input class="fc" id="le2-pl" value="${l.platform}"></div>
+    <div class="fg mb10"><label class="fl">BTC Collateral</label><input class="fc" id="le2-cb" type="number" step="any" value="${l.collateralBTC}"></div>
+    <div class="fg mb10"><label class="fl">Collateral Entry Price ($)</label><input class="fc" id="le2-ep" type="number" step="any" value="${l.collateralEntryPrice}"></div>
+    <div class="fg mb10"><label class="fl">Loan Amount ($)</label><input class="fc" id="le2-ln" type="number" step="any" value="${l.loanAmount}"></div>
+    <div class="fg mb10"><label class="fl">Loan APR %</label><input class="fc" id="le2-apr" type="number" step="any" value="${l.loanAPR}"></div>
+    <div class="fg mb10"><label class="fl">Collateral APR %</label><input class="fc" id="le2-capr" type="number" step="any" value="${l.collateralAPR||0}"></div>
+    <div class="fg mb10"><label class="fl">Max LTV %</label><input class="fc" id="le2-ltv" type="number" step="any" value="${l.maxLTV||80}"></div>
+    <div class="fg mb10"><label class="fl">BTC Bought (amount)</label><input class="fc" id="le2-bb" type="number" step="any" value="${l.btcBought||0}"></div>
+    <div class="fg mb10"><label class="fl">BTC Buy Price ($)</label><input class="fc" id="le2-bp" type="number" step="any" value="${l.btcBuyPrice||0}"></div>
+    <div class="fg mb10"><label class="fl">Notes</label><input class="fc" id="le2-nt" value="${l.notes||''}"></div>
+    <div style="display:flex;gap:7px"><button class="btn bp" onclick="saveEditLending('${id}')">Save</button><button class="btn bs" onclick="closeMod()">Cancel</button></div>`);
+}
+function saveEditLending(id){
+  const l=DB.lending.find(x=>x.id===id);if(!l)return;
+  l.platform=document.getElementById('le2-pl').value.trim();
+  l.collateralBTC=parseFloat(document.getElementById('le2-cb').value);
+  l.collateralEntryPrice=parseFloat(document.getElementById('le2-ep').value);
+  l.loanAmount=parseFloat(document.getElementById('le2-ln').value);
+  l.loanAPR=parseFloat(document.getElementById('le2-apr').value);
+  l.collateralAPR=parseFloat(document.getElementById('le2-capr').value)||0;
+  l.maxLTV=parseFloat(document.getElementById('le2-ltv').value)||80;
+  l.btcBought=parseFloat(document.getElementById('le2-bb').value)||0;
+  l.btcBuyPrice=parseFloat(document.getElementById('le2-bp').value)||0;
+  l.notes=document.getElementById('le2-nt').value.trim();
+  save();rLending();closeMod();toast('✅ Updated');
+}
+function delLending(id){if(!confirm('Remove this loan position?'))return;DB.lending=DB.lending.filter(x=>x.id!==id);save();rLending();toast('Removed');}
 
 // ═══════════════════════════════
 // DCA LOG
@@ -2147,8 +2328,8 @@ function saveSettings(){
 }
 function reqNotif(){Notification.requestPermission().then(p=>{document.getElementById('nst').textContent='Status: '+p;toast(p==='granted'?'✅ Notifications enabled':'⚠️ Not permitted','twarn');});}
 function expData(){const j=JSON.stringify(DB,null,2);const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([j],{type:'application/json'}));a.download='portfolio_'+Date.now()+'.json';a.click();}
-function impData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.positions)DB.positions=d.positions;if(d.alerts)DB.alerts=d.alerts;if(d.cash!==undefined)DB.cash=d.cash;if(d.etfCash!==undefined)DB.etfCash=d.etfCash;if(d.indicators)DB.indicators=d.indicators;if(d.settings)DB.settings=d.settings;if(d.staking)DB.staking=d.staking;if(d.lp)DB.lp=d.lp;if(d.dcaLog)DB.dcaLog=d.dcaLog;if(d.saylor)DB.saylor={...DB.saylor,...d.saylor};save();initAll();toast('✅ Portfolio imported');}catch(e){toast('❌ Invalid file','twarn');}};r.readAsText(f);}
-function clrAll(){if(!confirm('Clear ALL data?'))return;DB={positions:[],alerts:[],cash:0,etfCash:0,staking:[],lp:[],dcaLog:[],saylor:{capital:3000,itemSize:100,leverage:10,entryPrice:0,startDate:null,currentPrice:0,log:[]},indicators:{macro:[...DEF.macro.map(x=>({...x,links:[...(x.links||[])]}))],onchain:[...DEF.onchain.map(x=>({...x,links:[...(x.links||[])]}))],sentiment:[...DEF.sentiment.map(x=>({...x,links:[...(x.links||[])]}))],technical:[...DEF.technical.map(x=>({...x,links:[...(x.links||[])]}))],},settings:{tdKey:'',fmpKey:'',avKey:'',ri:60}};save();initAll();toast('Data cleared');}
+function impData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.positions)DB.positions=d.positions;if(d.alerts)DB.alerts=d.alerts;if(d.cash!==undefined)DB.cash=d.cash;if(d.etfCash!==undefined)DB.etfCash=d.etfCash;if(d.indicators)DB.indicators=d.indicators;if(d.settings)DB.settings=d.settings;if(d.staking)DB.staking=d.staking;if(d.lp)DB.lp=d.lp;if(d.lending)DB.lending=d.lending;if(d.dcaLog)DB.dcaLog=d.dcaLog;if(d.saylor)DB.saylor={...DB.saylor,...d.saylor};save();initAll();toast('✅ Portfolio imported');}catch(e){toast('❌ Invalid file','twarn');}};r.readAsText(f);}
+function clrAll(){if(!confirm('Clear ALL data?'))return;DB={positions:[],alerts:[],cash:0,etfCash:0,staking:[],lp:[],lending:[],dcaLog:[],saylor:{capital:3000,itemSize:100,leverage:10,entryPrice:0,startDate:null,currentPrice:0,log:[]},indicators:{macro:[...DEF.macro.map(x=>({...x,links:[...(x.links||[])]}))],onchain:[...DEF.onchain.map(x=>({...x,links:[...(x.links||[])]}))],sentiment:[...DEF.sentiment.map(x=>({...x,links:[...(x.links||[])]}))],technical:[...DEF.technical.map(x=>({...x,links:[...(x.links||[])]}))],},settings:{tdKey:'',fmpKey:'',avKey:'',ri:60}};save();initAll();toast('Data cleared');}
 
 // ═══════════════════════════════
 // AUTO REFRESH + INIT
