@@ -1,5 +1,5 @@
 /**
- * Portfolio Tracker — Patch v2
+ * Portfolio Tracker — Patch v3
  *
  * Fixes applied:
  *   1. INVESTED stat = sum(qty × avgBuy) for all positions + sum of manual ETF values
@@ -56,15 +56,37 @@
     return window._getEtfList().reduce((s, e) => s + Number(e.value || 0), 0);
   }
 
-  /* ── Fix 1: Override rSummary — add ETF total to INVESTED ────────────────*/
-  const _origRSummary = window.rSummary;
-  window.rSummary = function () {
-    _origRSummary.apply(this, arguments);
-    const d        = getMain();
-    const posInv   = (d.positions || []).reduce((s, p) => s + p.qty * p.buy, 0);
-    const el       = document.getElementById('h-cost');
+  /* ── Fix 1: MutationObserver on h-cost — works even if rSummary is a const ─
+   * The original script may declare rSummary with const/let, which means
+   * overriding window.rSummary has no effect on internal calls.
+   * Instead we watch the DOM node directly: whenever the page updates it,
+   * we immediately correct the value to include the ETF total.
+   */
+  function recalcInvested () {
+    const d      = getMain();
+    const posInv = (d.positions || []).reduce((s, p) => s + (Number(p.qty)||0) * (Number(p.buy)||0), 0);
+    const el     = document.getElementById('h-cost');
     if (el) el.textContent = fmtMoney(posInv + getEtfTotal());
-  };
+  }
+
+  function watchInvestedStat () {
+    const el = document.getElementById('h-cost');
+    if (!el) return;
+    let guard = false;
+    const obs = new MutationObserver(function () {
+      if (guard) return;
+      guard = true;
+      requestAnimationFrame(function () { recalcInvested(); guard = false; });
+    });
+    obs.observe(el, { childList: true, characterData: true, subtree: true });
+    recalcInvested(); // run immediately on init
+  }
+
+  // Also attempt window.rSummary override as a secondary hook
+  if (typeof window.rSummary === 'function') {
+    const _orig = window.rSummary;
+    window.rSummary = function () { _orig.apply(this, arguments); recalcInvested(); };
+  }
 
   /* ── Fix 3: Override rPos — reattach VALUE sort after each table render ───*/
   let _sortDir = null; // null | 'desc' | 'asc'
@@ -178,7 +200,7 @@
       if (v) v.textContent = fmtMoney(etfs.reduce((s, e) => s + Number(e.value || 0), 0));
     }
     window._renderEtfTable();
-    window.rSummary(); // refresh INVESTED stat
+    recalcInvested(); // refresh INVESTED stat directly
     if (typeof rPie === 'function') rPie(); // refresh allocation pie
   };
 
@@ -229,7 +251,7 @@
   /* ── Bootstrap ────────────────────────────────────────────────────────────*/
   function init () {
     injectEtfSection();
-    window.rSummary();  // trigger patched invested calc immediately
+    watchInvestedStat();   // Fix 1: start MutationObserver + run initial recalc
     attachSortHeader();
   }
 
