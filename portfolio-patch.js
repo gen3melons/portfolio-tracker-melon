@@ -145,7 +145,7 @@
           <input value="${escHtml(e.name)}"
             onchange="window._etfUpdate(${i},'name',this.value)"
             style="background:#1e293b;border:1px solid #334155;border-radius:4px;
-                   color:#e2e8f0;padding:2px 6px;width:110px;font-size:0.84em;"/>
+                   color:#e2e8f0;padding:2px 6px;width:200px;font-size:0.84em;"/>
         </td>
         <td style="padding:3px 6px;text-align:right;">
           <input type="number" step="0.01" value="${e.value}"
@@ -176,7 +176,7 @@
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:4px;">
         <input id="etf-new-name" placeholder="Name (e.g. VWCE)"
           style="background:#1e293b;border:1px solid #334155;border-radius:6px;
-                 color:#e2e8f0;padding:3px 8px;width:120px;font-size:0.82em;"
+                 color:#e2e8f0;padding:3px 8px;width:200px;font-size:0.82em;"
           onkeydown="if(event.key==='Enter')document.getElementById('etf-new-val')?.focus()"/>
         <input id="etf-new-val" type="number" step="0.01" placeholder="Value ($)"
           style="background:#1e293b;border:1px solid #334155;border-radius:6px;
